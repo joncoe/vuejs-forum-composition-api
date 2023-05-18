@@ -2,33 +2,26 @@
 import { reactive, ref, computed, defineProps } from "vue";
 import sourceData from "@/data.json";
 import PostList from "@/components/PostList.vue";
+import PostEditor from "@/components/PostEditor.vue";
 
 const threads = reactive(sourceData.threads);
 const posts = reactive(sourceData.posts);
-const newPostText = ref("")
-
-const props = defineProps(['id'])
-
 const thread = computed(() => {
   return threads.find(thread => thread.id === props.id)
 })
 
+const props = defineProps(['id'])
+
 const threadPosts = computed(() => {
   return posts.filter(post => post.threadId === props.id)
 })
-
-const addPost = () => {
-  const postId = 'ggqq' + Math.random()
+const addPost = (e) => {
   const post = {
-    id: postId,
-    text: newPostText.value,
-    publishedAt: Math.floor(Date.now() / 1000),
+    ...e.post,
     threadId: props.id,
-    userId: 'rpbB8C6ifrYmNDufMERWfQUoa202'
   }
+  thread.value.posts.push(e.postId)
   posts.push(post)
-  thread.value.posts.push(postId)
-  newPostText.value = "";
 }
 
 </script>
@@ -37,26 +30,7 @@ const addPost = () => {
     <h2>{{ thread.title }}</h2>
 
     <PostList :posts="threadPosts" />
-
-    <form @submit.prevent="addPost">
-      <div class="form-group">
-        <label for="thread_content">Content:</label>
-        <textarea
-          id="thread_content"
-          class="form-input"
-          name="content"
-          rows="8"
-          cols="140"
-          placeholder="Enter your post."
-          v-model="newPostText"
-        />
-      </div>
-
-      <div class="btn-group">
-        <button class="btn btn-ghost">Cancel</button>
-        <button class="btn btn-blue" type="submit" name="Publish">Publish </button>
-      </div>
-    </form>
+    <PostEditor @save-post="addPost"/>
 
   </div>
 </template>
