@@ -1,12 +1,7 @@
 <script setup>
 import { reactive, defineProps } from 'vue'
-
+import AppDate from '@/components/AppDate.vue';
 import sourceData from "@/data.json";
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
-import localizedFormat from 'dayjs/plugin/localizedFormat';
-dayjs.extend(relativeTime);
-dayjs.extend(localizedFormat);
 
 const users = reactive(sourceData.users);
 
@@ -20,14 +15,6 @@ defineProps({
 const userById = (userId) => {
   return users.find((p) => p.id === userId);
 };
-
-const diffForHumans = (timestamp) => {
-  return dayjs.unix(timestamp).fromNow();
-}
-
-const humanFriendlyDate = (timestamp) => {
-  return dayjs.unix(timestamp).format('MMM D, YYYY');
-}
 
 </script>
 
@@ -55,7 +42,9 @@ const humanFriendlyDate = (timestamp) => {
 
       </div>
 
-      <div class="post-date text-faded" :title="humanFriendlyDate(post.publishedAt)">{{ diffForHumans(post.publishedAt) }} 🗓️</div>
+      <div class="post-date text-faded">
+        <AppDate :timestamp="post.publishedAt"/>
+      </div>
 
     </div>
   </div>
