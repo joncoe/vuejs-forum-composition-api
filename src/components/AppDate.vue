@@ -1,30 +1,30 @@
 <script setup>
-import { defineProps } from 'vue'
+import { defineProps, computed } from 'vue'
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 dayjs.extend(relativeTime);
 dayjs.extend(localizedFormat);
 
-defineProps({
+const props = defineProps({
   timestamp: {
     type: String,
     required: true
   }
 })
 
-const diffForHumans = (timestamp) => {
-  return dayjs.unix(timestamp).fromNow();
-}
+const diffForHumans = computed(() => {
+  return dayjs.unix(props.timestamp).fromNow();
+})
 
-const humanFriendlyDate = (timestamp) => {
-  return dayjs.unix(timestamp).format('llll');
-}
+const humanFriendlyDate = computed(() => {
+  return dayjs.unix(props.timestamp).format('llll');
+})
 
 </script>
 
 <template>
-  <span :title="humanFriendlyDate(timestamp)">{{ diffForHumans(timestamp) }} 🗓️</span>
+  <span :title="humanFriendlyDate">{{ diffForHumans }} 🗓️</span>
 </template>
 
 
