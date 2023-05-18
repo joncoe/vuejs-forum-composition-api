@@ -1,5 +1,6 @@
 <script setup>
 import { reactive, defineProps } from "vue";
+import AppDate from '@/components/AppDate.vue'
 import sourceData from "@/data.json";
 
 const posts = reactive(sourceData.posts);
@@ -56,7 +57,7 @@ const userById = (userId) => {
               <p class="text-xsmall">
                 <a href="profile.html">{{ userById(thread.userId).name }}</a>
               </p>
-              <p class="text-xsmall text-faded">{{ thread.pubishedAt }}</p>
+              <p class="text-xsmall text-faded"><AppDate :timestamp="thread.publishedAt"/></p>
             </div>
           </div>
         </div>
