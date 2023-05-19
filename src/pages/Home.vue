@@ -1,18 +1,18 @@
 <script setup>
 import { reactive } from "vue";
-import ThreadList from '@/components/ThreadList.vue';
+import ForumList from '@/components/ForumList.vue';
 import sourceData from "@/data.json";
 
-const threads = reactive(sourceData.threads);
+const forums = reactive(sourceData.forums);
 
 
 
 </script>
 <template>
-  <div>
+  <div class="col-full">
     <h1>Heading</h1>
 
-    <ThreadList :threads="threads"/>
+    <ForumList :forums="forums"/>
 
   </div>
 
