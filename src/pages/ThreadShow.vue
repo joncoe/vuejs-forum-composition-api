@@ -1,19 +1,21 @@
 <script setup>
-import { reactive, computed, defineProps } from "vue";
-import sourceData from "@/data.json";
+import { computed, defineProps } from "vue";
+import {useStore} from 'vuex';
 import PostList from "@/components/PostList.vue";
 import PostEditor from "@/components/PostEditor.vue";
 
-const threads = reactive(sourceData.threads);
-const posts = reactive(sourceData.posts);
+const store = useStore();
+
+const threads = computed(() => store.state.threads);
+const posts = computed(() => store.state.posts);
 const thread = computed(() => {
-  return threads.find(thread => thread.id === props.id)
+  return threads.value.find(thread => thread.id === props.id)
 })
 
 const props = defineProps(['id'])
 
 const threadPosts = computed(() => {
-  return posts.filter(post => post.threadId === props.id)
+  return posts.value.filter(post => post.threadId === props.id)
 })
 const addPost = (e) => {
   const post = {
@@ -21,7 +23,7 @@ const addPost = (e) => {
     threadId: props.id,
   }
   thread.value.posts.push(e.postId)
-  posts.push(post)
+  posts.value.push(post)
 }
 
 </script>

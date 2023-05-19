@@ -1,8 +1,9 @@
 <script setup>
-import { reactive, defineProps } from 'vue'
-import sourceData from "@/data.json";
+import { computed, defineProps } from 'vue';
+import {useStore} from 'vuex';
 
-const users = reactive(sourceData.users);
+const store = useStore();
+const users = computed(() => store.state.users);
 
 defineProps({
   posts: {
@@ -12,7 +13,7 @@ defineProps({
 })
 
 const userById = (userId) => {
-  return users.find((p) => p.id === userId);
+  return users.value.find((p) => p.id === userId);
 };
 
 </script>
