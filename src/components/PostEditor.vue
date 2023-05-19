@@ -6,9 +6,7 @@ const emit = defineEmits(['save-post']);
 const postText = ref("")
 
 const savePost = () => {
-  const postId = 'ggqq' + Math.random()
   const post = {
-    id: postId,
     text: postText.value,
     publishedAt: Math.floor(Date.now() / 1000),
     threadId: null,

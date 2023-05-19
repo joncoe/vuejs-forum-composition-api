@@ -22,8 +22,7 @@ const addPost = (e) => {
     ...e.post,
     threadId: props.id,
   }
-  thread.value.posts.push(e.postId)
-  posts.value.push(post)
+  store.dispatch('createPost', post)
 }
 
 </script>
