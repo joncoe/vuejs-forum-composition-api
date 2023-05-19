@@ -1,9 +1,10 @@
 <script setup>
-import { reactive } from "vue";
+import { computed } from "vue";
+import {useStore} from 'vuex';
 import CategoryList from '@/components/CategoryList.vue';
-import sourceData from "@/data.json";
 
-const categories = reactive(sourceData.categories)
+const store = useStore();
+const categories = computed(() => store.state.categories)
 
 </script>
 <template>
