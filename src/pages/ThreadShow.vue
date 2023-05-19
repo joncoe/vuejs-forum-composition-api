@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, ref, computed, defineProps } from "vue";
+import { reactive, computed, defineProps } from "vue";
 import sourceData from "@/data.json";
 import PostList from "@/components/PostList.vue";
 import PostEditor from "@/components/PostEditor.vue";

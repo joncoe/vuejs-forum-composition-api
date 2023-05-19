@@ -2,7 +2,6 @@
 import { reactive, defineProps } from "vue";
 import sourceData from "@/data.json";
 
-const posts = reactive(sourceData.posts);
 const users = reactive(sourceData.users);
 
 const props = defineProps({
@@ -12,9 +11,6 @@ const props = defineProps({
   }
 })
 
-const postById = (postId) => {
-  return posts.find((p) => p.id === postId);
-};
 const userById = (userId) => {
   return users.find((p) => p.id === userId);
 };

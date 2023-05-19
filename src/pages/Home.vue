@@ -3,10 +3,7 @@ import { reactive } from "vue";
 import CategoryList from '@/components/CategoryList.vue';
 import sourceData from "@/data.json";
 
-const forums = reactive(sourceData.forums);
 const categories = reactive(sourceData.categories)
-
-
 
 </script>
 <template>
