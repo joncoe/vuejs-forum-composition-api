@@ -1,7 +1,10 @@
 import { createStore } from "vuex";
 import sourceData from "@/data.json";
 export default createStore({
-  state: sourceData,
+  state: {
+    ...sourceData,
+    authId: 'VXjpr2WHa8Ux4Bnggym8QFLdv5C3'
+  },
   actions: {
     createPost(context, post) {
 
@@ -19,5 +22,8 @@ export default createStore({
       const thread = state.threads.find(thread => thread.id === threadId)
       thread.posts.push(postId)
     }
+  },
+  getters: {
+    authUser: state => state.users.find(user => user.id === state.authId)
   }
 })
