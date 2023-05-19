@@ -4,9 +4,9 @@
 <template>
   <header class="header" id="header">
 
-    <a href="index.html" class="logo">
-      <img src="assets/img/svg/vueschool-logo.svg">
-    </a>
+    <router-link :to="{name: 'Home'}" class="logo">
+      <img src="@/assets/svg/vueschool-logo.svg">
+    </router-link>
 
     <div class="btn-hamburger">
       <!-- use .btn-humburger-active to open the menu -->
@@ -25,7 +25,7 @@
               alt="">
             <span>
               Alex Kyriakidis
-              <img class="icon-profile" src="assets/img/svg/arrow-profile.svg" alt="">
+              <img class="icon-profile" src="@/assets/svg/arrow-profile.svg" alt="">
             </span>
           </a>
 
@@ -41,7 +41,7 @@
         </li>
       </ul>
 
-      <ul>
+<!--      <ul>
         <li class="navbar-item">
           <a href="index.html">Home</a>
         </li>
@@ -54,7 +54,7 @@
         <li class="navbar-item">
           <a href="thread.html">Thread</a>
         </li>
-        <!-- Show these option only on mobile-->
+
         <li class="navbar-item mobile-only">
           <a href="profile.html">My Profile</a>
         </li>
@@ -62,6 +62,7 @@
           <a href="#">Logout</a>
         </li>
       </ul>
+    -->
     </nav>
   </header>
 </template>

@@ -1,14 +1,15 @@
+<script setup>
+import TheNavBar from './components/TheNavBar.vue';
+</script>
+
 <template>
+  <TheNavBar/>
   <div class="container">
     <router-view/>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'App'
-}
-</script>
+
 
 <style>
 @import "assets/style.css";
