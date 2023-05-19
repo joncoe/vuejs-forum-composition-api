@@ -5,6 +5,10 @@ defineProps({
   forums: {
     type: Array,
     required: true
+  },
+  categoryName: {
+    type: String,
+    default: "Forums"
   }
 })
 
@@ -22,14 +26,16 @@ const forumThreadsWord = (forum) => {
     <div class="forum-list">
 
       <h2 class="list-title">
-        <a href="#">Forums</a>
+        <a href="#">{{ categoryName }}</a>
       </h2>
 
       <div class="forum-listing" v-for="forum in forums" :key="forum.id">
         <div class="forum-details">
+
           <router-link :to="{ name: 'Forum', params: { id: forum.id } }" class="text-xlarge">
             {{ forum.name }}
           </router-link>
+
           <p>{{ forum.description }}</p>
         </div>
 
