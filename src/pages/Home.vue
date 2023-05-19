@@ -8,7 +8,7 @@ const categories = computed(() => store.state.categories)
 
 </script>
 <template>
-  <div class="col-full">
+  <div class="col-full push-top">
     <h1>Forum Page Title</h1>
       <CategoryList :categories="categories"/>
   </div>
