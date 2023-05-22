@@ -19,11 +19,10 @@ const forum = computed(() => {
 })
 
 const save = () => {
-  console.log('save');
   store.dispatch('createThread', {
-    forumId: props.forum.id,
-    title,
-    text
+    forumId: props.forumId,
+    title: title.value,
+    text: text.value
   })
 }
 const cancel = () => {

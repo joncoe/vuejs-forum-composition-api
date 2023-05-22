@@ -28,6 +28,7 @@ export default createStore({
         publishedAt: Math.floor(Date.now() / 1000),
         id
       };
+      console.log(thread)
       commit('setThread', { thread });
       commit('appendThreadToForum', { forumId, threadId: id });
       commit('appendThreadToUser', { userId, threadId: id });
@@ -58,7 +59,7 @@ export default createStore({
       state.users[userIndex] = user
     },
     setThread(state, {thread}) {
-      state.thread.push(thread)
+      state.threads.push(thread)
     }
   },
   getters: {
