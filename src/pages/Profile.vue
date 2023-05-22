@@ -3,28 +3,18 @@ import { computed, defineProps } from 'vue';
 import { useStore } from 'vuex';
 
 import PostList from '@/components/PostList';
+import UserProfileCard from '@/components/UserProfileCard.vue';
 
 const store = useStore();
 const user = computed(() => store.getters.authUser);
 
-const props = defineProps({
+defineProps({
   id: {
     required: true,
     type: String
   }
 })
 
-const userPostsCount = computed(() => userPosts.value.length);
-const userThreadCount = computed(() => userThreads.value.length);
-
-
-const userPosts = computed(() => {
-  return store.state.posts.filter(post => post.userId === user.value.id)
-})
-
-const userThreads = computed(() => {
-  return store.state.threads.filter(thread => thread.userId === user.value.id)
-})
 
 </script>
 <template>
@@ -32,35 +22,7 @@ const userThreads = computed(() => {
     <div class="flex-grid">
       <div class="col-3 push-top">
 
-        <div class="profile-card">
-
-          <p class="text-center">
-            <img :src="user.avatar" :alt="`${user.name} profile picture`" class="avatar-xlarge">
-          </p>
-
-          <h1 class="title">{{user.username}}</h1>
-
-          <p class="text-lead">{{user.name}}</p>
-
-          <p class="text-justify">
-            {{user.bio || "No biography 🤷🏼‍♀️"}}
-          </p>
-
-          <span class="online">🟢 {{user.name }} is online</span>
-
-
-          <div class="stats">
-            <span>{{userPostsCount}} posts</span>
-            <span>{{userThreadCount}} threads</span>
-          </div>
-
-          <hr>
-
-          <p class="text-large text-center"><i class="fa fa-globe"></i> <a :href="user.website">{{ user.website }}</a></p>
-
-        </div>
-
-        <p class="text-xsmall text-faded text-center">Member since june 2003, last visited 4 hours ago</p>
+        <UserProfileCard :user="user"/>
 
         <div class="text-center">
           <hr>
@@ -80,7 +42,7 @@ const userThreads = computed(() => {
 
         <hr>
 
-        <PostList :posts="userPosts" />
+        <PostList :posts="user.posts" />
 
       </div>
     </div>
