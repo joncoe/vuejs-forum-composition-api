@@ -1,7 +1,7 @@
 <script setup>
 import { defineProps, reactive } from 'vue';
 import {useStore} from 'vuex';
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 
 const props = defineProps({
   user: {
@@ -13,7 +13,6 @@ const props = defineProps({
 const store = useStore();
 
 const router = useRouter();
-const route = useRoute();
 
 
 let activeUser = reactive({ ...props.user });
