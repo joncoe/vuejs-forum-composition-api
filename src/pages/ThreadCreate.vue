@@ -1,5 +1,6 @@
 <script setup>
 import {defineProps, ref, computed} from 'vue';
+import {useRouter} from 'vue-router';
 import { useStore } from 'vuex';
 
 const props = defineProps({
@@ -9,7 +10,8 @@ const props = defineProps({
   }
 })
 
-const store = useStore()
+const store = useStore();
+let router = useRouter();
 
 const title = ref('');
 const text = ref('');
@@ -18,15 +20,20 @@ const forum = computed(() => {
   return store.state.forums.find(forum => forum.id === props.forumId)
 })
 
-const save = () => {
-  store.dispatch('createThread', {
+const save = async () => {
+  const thread = await store.dispatch('createThread', {
     forumId: props.forumId,
     title: title.value,
     text: text.value
   })
+  router.push({name: 'ThreadShow', params: {
+    id: thread.id
+  }})
 }
 const cancel = () => {
-  console.log('save');
+  router.push({name: 'Forum', params: {
+    id: forum.value.id
+  }})
 }
 </script>
 
