@@ -1,9 +1,10 @@
 import Home from '@/pages/Home';
+import Category from '@/pages/Category';
+import Profile from '@/pages/Profile';
 import ThreadShow from '@/pages/ThreadShow';
 import NotFound from '@/pages/NotFound';
 import Forum from '@/pages/Forum';
-import Category from '@/pages/Category';
-import Profile from '@/pages/Profile';
+import ThreadCreate from '@/pages/ThreadCreate';
 import {createRouter, createWebHistory } from 'vue-router';
 import sourceData from "@/data.json";
 
@@ -69,6 +70,12 @@ const routes = [
         })
       }
     }
+  },
+  {
+    path: '/forum/:forumId/thread/create',
+    name: 'ThreadCreate',
+    component: ThreadCreate,
+    props: true
   },
   {
     path: '/:pathMatch(.*)*',

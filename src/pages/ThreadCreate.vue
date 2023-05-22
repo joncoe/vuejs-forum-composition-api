@@ -1,10 +1,10 @@
 <script setup>
-import {defineProps, ref} from 'vue';
+import {defineProps, ref, computed} from 'vue';
 import { useStore } from 'vuex';
 
 const props = defineProps({
-  form: {
-    type: Object,
+  forumId: {
+    type: String,
     required: true
   }
 })
@@ -14,6 +14,9 @@ const store = useStore()
 const title = ref('');
 const text = ref('');
 
+const forum = computed(() => {
+  return store.state.forums.find(forum => forum.id === props.forumId)
+})
 
 const save = () => {
   console.log('save');
