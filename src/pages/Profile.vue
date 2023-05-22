@@ -3,7 +3,8 @@ import { computed, defineProps } from 'vue';
 import { useStore } from 'vuex';
 
 import PostList from '@/components/PostList';
-import UserProfileCard from '@/components/UserProfileCard.vue';
+import UserProfileCard from '@/components/UserProfileCard';
+import UserProfileCardEditor from '@/components/UserProfileCardEditor';
 
 const store = useStore();
 const user = computed(() => store.getters.authUser);
@@ -12,6 +13,11 @@ defineProps({
   id: {
     required: true,
     type: String
+  },
+  edit: {
+    type: Boolean,
+    default: false,
+    required: true
   }
 })
 
@@ -22,12 +28,8 @@ defineProps({
     <div class="flex-grid">
       <div class="col-3 push-top">
 
-        <UserProfileCard :user="user"/>
-
-        <div class="text-center">
-          <hr>
-          <a href="edit-profile.html" class="btn-green btn-small">Edit Profile</a>
-        </div>
+        <UserProfileCardEditor v-if="edit" :user="user" />
+        <UserProfileCard v-else :user="user" />
 
       </div>
 

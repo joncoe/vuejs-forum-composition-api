@@ -12,6 +12,9 @@ export default createStore({
 
       context.commit('setPost', { post })
       context.commit('appendPostToThread', { postId: post.id, threadId: post.threadId })
+    },
+    updateUser({commit}, user) {
+      commit('saveUser', {user, userId: user.id})
     }
   },
   mutations: {
@@ -21,6 +24,10 @@ export default createStore({
     appendPostToThread(state, { postId, threadId}) {
       const thread = state.threads.find(thread => thread.id === threadId)
       thread.posts.push(postId)
+    },
+    saveUser(state, {user, userId}) {
+      const userIndex = state.users.findIndex(user => user.id === userId);
+      state.users[userIndex] = user
     }
   },
   getters: {
