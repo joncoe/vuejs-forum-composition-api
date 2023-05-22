@@ -8,9 +8,7 @@ const postText = ref("")
 const savePost = () => {
   const post = {
     text: postText.value,
-    publishedAt: Math.floor(Date.now() / 1000),
     threadId: null,
-    userId: 'rpbB8C6ifrYmNDufMERWfQUoa202'
   }
   emit('save-post', { post })
   postText.value = "";
