@@ -1,5 +1,7 @@
 import { createStore } from "vuex";
 import sourceData from "@/data.json";
+import { findById } from "@/helpers";
+
 export default createStore({
   state: {
     ...sourceData,
@@ -32,11 +34,11 @@ export default createStore({
       commit('appendThreadToForum', { forumId, threadId: id });
       commit('appendThreadToUser', { userId, threadId: id });
       dispatch('createPost', {text, threadId: id});
-      return state.threads.find(thread => thread.id === id)
+      return findById(state.threads, id);//
     },
     async updateThread({commit, state}, {title, text, id}) {
-      const thread = state.threads.find(thread => thread.id === id);
-      const post = state.posts.find(post => post.id === thread.posts[0])
+      const thread = findById(state.threads, id)
+      const post = findById(state.posts, thread.posts[0])
 
       const newThread = {...thread, title}
       const newPost = {...post, text}
@@ -49,17 +51,17 @@ export default createStore({
   },
   mutations: {
     appendPostToThread(state, { postId, threadId}) {
-      const thread = state.threads.find(thread => thread.id === threadId)
+      const thread = findById(state.threads,threadId);//
       thread.posts = thread.posts || []
       thread.posts.push(postId)
     },
     appendThreadToForum(state, { forumId, threadId}) {
-      const forum = state.forums.find(forum => forum.id === forumId)
+      const forum = findById(state.forums, forumId);//
       forum.posts = forum.posts || []
       forum.posts.push(threadId)
     },
     appendThreadToUser(state, { userId, threadId}) {
-      const user = state.users.find(user => user.id === userId)
+      const user = findById(state.users, userId);//
       user.posts = user.posts || []
       user.posts.push(threadId)
     },
@@ -86,7 +88,7 @@ export default createStore({
   },
   getters: {
     authUser: state =>  {
-      const user = state.users.find(user => user.id === state.authId);
+      const user = findById(state.users, state.authId);
       if (!user) return null;
       return {
         ...user,
