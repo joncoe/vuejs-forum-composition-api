@@ -1,7 +1,6 @@
 <script setup>
 import { computed, defineProps } from "vue";
 import {useStore} from 'vuex';
-import firebase from 'firebase';
 
 import PostList from "@/components/PostList.vue";
 import PostEditor from "@/components/PostEditor.vue";
@@ -11,36 +10,11 @@ const store = useStore();
 
 const posts = computed(() => store.state.posts);
 
-const thread = computed(() => {
-  return store.getters.thread(props.id);
-})
+const thread = await store.dispatch('fetchThread', {id: props.id})
 
 const props = defineProps(['id'])
 
-firebase.firestore().collection('threads').doc(props.id).onSnapshot((doc) => {
 
-  const thread = { ...doc.data(), id: doc.id }
-  store.commit('setThread', { thread })
-
-  // fetch the user
-  firebase.firestore().collection('users').doc(thread.userId).onSnapshot((doc) => {
-        const user = { ...doc.data(), id: doc.id }
-        store.commit('setUser', { user })
-      })
-
-      // fetch the posts
-      thread.posts.forEach(postId => {
-        firebase.firestore().collection('posts').doc(postId).onSnapshot((doc) => {
-          const post = { ...doc.data(), id: doc.id }
-          store.commit('setPost', { post })
-          // fetch the user for each post
-          firebase.firestore().collection('users').doc(post.userId).onSnapshot((doc) => {
-            const user = { ...doc.data(), id: doc.id }
-            store.commit('setUser', { user })
-          })
-        })
-      })
-})
 
 const threadPosts = computed(() => {
   return posts.value.filter(post => post.threadId === props.id)
