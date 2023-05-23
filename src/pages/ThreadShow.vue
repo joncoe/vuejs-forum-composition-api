@@ -3,14 +3,13 @@ import { computed, defineProps } from "vue";
 import {useStore} from 'vuex';
 import PostList from "@/components/PostList.vue";
 import PostEditor from "@/components/PostEditor.vue";
-import { findById } from "@/helpers";
+import AppDate from "@/components/AppDate.vue";
 
 const store = useStore();
 
-const threads = computed(() => store.state.threads);
 const posts = computed(() => store.state.posts);
 const thread = computed(() => {
-  return findById(threads.value, props.id);
+  return store.getters.thread(props.id);
 })
 
 const props = defineProps(['id'])
@@ -30,12 +29,21 @@ const addPost = (e) => {
 <template>
   <div class="col-large push-top">
     <h1>{{ thread.title }}
-
-    <router-link
-      :to="{name: 'ThreadEdit', id: id}"
-      class="btn-green btn-small"
-    >Edit Thread</router-link>
+      <router-link
+        :to="{name: 'ThreadEdit', id: id}"
+        class="btn-green btn-small"
+      >Edit Thread</router-link>
     </h1>
+
+    <p>
+      By <a href="#" class="link-unstyled">{{thread.author.name}}</a>, <AppDate :timestamp="thread.publishedAt"/>.
+      <span
+        style="float:right; margin-top: 2px;"
+        class="hide-mobile text-faded text-small">
+          {{thread.repliesCount}} replies by
+          {{thread.contributorsCount}} contributors
+      </span>
+    </p>
 
     <PostList :posts="threadPosts" />
     <PostEditor @save-post="addPost"/>
