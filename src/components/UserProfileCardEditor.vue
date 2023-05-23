@@ -11,7 +11,6 @@ const props = defineProps({
 })
 
 const store = useStore();
-
 const router = useRouter();
 
 
