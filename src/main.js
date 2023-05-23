@@ -5,10 +5,7 @@ import router from '@/router';
 import store from '@/store';
 
 // Firebase
-import { initializeApp } from "firebase/app";
-import firebaseConfig from '@/config/firebase';
-const app = initializeApp(firebaseConfig);
-
+import app from '@/config/firebase';
 
 const forumApp = createApp(App);
 forumApp.use(router)
