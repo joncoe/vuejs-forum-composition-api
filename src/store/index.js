@@ -1,12 +1,17 @@
 import { createStore } from "vuex";
-import sourceData from "@/data.json";
+// import sourceData from "@/data.json";
 import { findById } from "@/helpers";
 import { upsert } from "@/helpers";
 
 
 export default createStore({
   state: {
-    ...sourceData,
+    // ...sourceData,
+    categories: [],
+    forums: [],
+    threads: [],
+    posts: [],
+    users: [],
     authId: 'VXjpr2WHa8Ux4Bnggym8QFLdv5C3'
   },
   actions: {
@@ -21,7 +26,7 @@ export default createStore({
       commit('appendContributorToThread', { childId: state.authId, parentId: post.threadId })
     },
     updateUser({commit}, user) {
-      commit('saveUser', {user, userId: user.id})
+      commit('setUser', {user, userId: user.id})
     },
     async createThread({ commit, state, dispatch}, {title, forumId, text}) {
       const id = 'ggqq' + Math.random();
@@ -59,14 +64,14 @@ export default createStore({
     appendThreadToUser: makeAppendChildToParentMutation({parent: 'users', child: 'posts'}),
     appendContributorToThread: makeAppendChildToParentMutation({parent: 'threads', child: 'contributors'}),
 
-    saveUser(state, {user, userId}) {
-      const userIndex = state.users.findIndex(user => user.id === userId);
-      state.users[userIndex] = user
+    setUser(state, {user}) {
+      upsert(state.users, user);
     },
     setPost(state, { post }) {
       upsert(state.posts, post);
     },
     setThread(state, {thread}) {
+      console.log('setThread', thread)
       upsert(state.threads, thread);
     }
   },
