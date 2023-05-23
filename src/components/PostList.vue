@@ -1,6 +1,7 @@
 <script setup>
 import { computed, defineProps } from 'vue';
 import {useStore} from 'vuex';
+import { findById } from '@/helpers';
 
 const store = useStore();
 const users = computed(() => store.state.users);
@@ -13,7 +14,7 @@ defineProps({
 })
 
 const userById = (userId) => {
-  return users.value.find((p) => p.id === userId);
+  return findById(users.value, userId);
 };
 
 </script>

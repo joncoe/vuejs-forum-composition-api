@@ -3,6 +3,7 @@ import {defineProps, computed} from 'vue';
 import ThreadEditor from '@/components/ThreadEditor.vue';
 import {useRouter} from 'vue-router';
 import { useStore } from 'vuex';
+import { findById } from '@/helpers';
 
 const props = defineProps({
   id: {
@@ -15,10 +16,10 @@ const store = useStore();
 let router = useRouter();
 
 const thread = computed(() => {
-  return store.state.threads.find(thread => thread.id === props.id)
+  return findById(store.state.threads, props.id);
 })
 const text = computed(() => {
-  return store.state.posts.find(post => post.id === thread.value.posts[0] ).text
+  return findById(store.state.posts, thread.value.posts[0]);
 })
 
 const save = async ({title, text}) => {

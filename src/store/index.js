@@ -1,6 +1,7 @@
 import { createStore } from "vuex";
 import sourceData from "@/data.json";
 import { findById } from "@/helpers";
+import { upsert } from "@/helpers";
 
 export default createStore({
   state: {
@@ -70,20 +71,10 @@ export default createStore({
       state.users[userIndex] = user
     },
     setPost(state, { post }) {
-      const index = state.posts.findIndex(p => p.id === post.id);
-      if (post.id && index !== -1) {
-        state.posts[index] = post;
-      } else {
-        state.posts.push(post) // append the post to the thread
-      }
+      upsert(state.posts, post);
     },
     setThread(state, {thread}) {
-      const index = state.threads.findIndex(t => t.id === thread.id);
-      if (thread.id && index !== -1) {
-        state.threads[index] = thread
-      } else {
-        state.threads.push(thread)
-      }
+      upsert(state.threads, thread);
     }
   },
   getters: {

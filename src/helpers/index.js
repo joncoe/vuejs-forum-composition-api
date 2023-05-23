@@ -1,2 +1,11 @@
 export const findById = (resources, id) =>
   resources.find(resource => resource.id === id)
+
+export const upsert = (resourceSet, resourceToAdd) => {
+  const index = resourceSet.findIndex(res => res.id === resourceToAdd.id);
+  if (resourceToAdd.id && index !== -1) {
+    resourceSet[index] = resourceToAdd;
+  } else {
+    resourceSet.push(resourceToAdd) // append the resource to the set
+  }
+}

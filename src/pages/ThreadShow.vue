@@ -3,13 +3,14 @@ import { computed, defineProps } from "vue";
 import {useStore} from 'vuex';
 import PostList from "@/components/PostList.vue";
 import PostEditor from "@/components/PostEditor.vue";
+import { findById } from "@/helpers";
 
 const store = useStore();
 
 const threads = computed(() => store.state.threads);
 const posts = computed(() => store.state.posts);
 const thread = computed(() => {
-  return threads.value.find(thread => thread.id === props.id)
+  return findById(threads.value, props.id);
 })
 
 const props = defineProps(['id'])
