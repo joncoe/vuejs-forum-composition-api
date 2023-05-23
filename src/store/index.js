@@ -3,6 +3,7 @@ import sourceData from "@/data.json";
 import { findById } from "@/helpers";
 import { upsert } from "@/helpers";
 
+
 export default createStore({
   state: {
     ...sourceData,
@@ -16,7 +17,7 @@ export default createStore({
       post.publishedAt =  Math.floor(Date.now() / 1000),
 
       commit('setPost', { post })
-      commit('appendPostToThread', { postId: post.id, threadId: post.threadId })
+      commit('appendPostToThread', { childId: post.id, parentId: post.threadId })
     },
     updateUser({commit}, user) {
       commit('saveUser', {user, userId: user.id})
@@ -32,8 +33,9 @@ export default createStore({
         id
       };
       commit('setThread', { thread });
-      commit('appendThreadToForum', { forumId, threadId: id });
-      commit('appendThreadToUser', { userId, threadId: id });
+      commit('appendThreadToForum', { parentId: forumId, childId: id });
+      commit('appendThreadToUser', { parentId: userId, childId: id });
+
       dispatch('createPost', {text, threadId: id});
       return findById(state.threads, id);//
     },
@@ -51,21 +53,10 @@ export default createStore({
     }
   },
   mutations: {
-    appendPostToThread(state, { postId, threadId}) {
-      const thread = findById(state.threads,threadId);//
-      thread.posts = thread.posts || []
-      thread.posts.push(postId)
-    },
-    appendThreadToForum(state, { forumId, threadId}) {
-      const forum = findById(state.forums, forumId);//
-      forum.posts = forum.posts || []
-      forum.posts.push(threadId)
-    },
-    appendThreadToUser(state, { userId, threadId}) {
-      const user = findById(state.users, userId);//
-      user.posts = user.posts || []
-      user.posts.push(threadId)
-    },
+    appendPostToThread: makeAppendChildToParentMutation({parent: 'threads', child: 'posts'}),
+    appendThreadToForum: makeAppendChildToParentMutation({parent: 'forums', child: 'threads'}),
+    appendThreadToUser: makeAppendChildToParentMutation({parent: 'users', child: 'posts'}),
+
     saveUser(state, {user, userId}) {
       const userIndex = state.users.findIndex(user => user.id === userId);
       state.users[userIndex] = user
@@ -100,3 +91,12 @@ export default createStore({
 
   }
 })
+
+
+function makeAppendChildToParentMutation ({parent, child}) {
+  return (state, { childId, parentId}) => {
+    const resource = findById(state[parent], parentId);//
+    resource[child] = resource[child] || []
+    resource[child].push(childId)
+  }
+}
