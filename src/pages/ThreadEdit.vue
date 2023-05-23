@@ -32,8 +32,8 @@ const save = async ({title, text}) => {
   }})
 }
 const cancel = () => {
-  router.push({name: 'Thread', params: {
-    id: props.thread.id
+  router.push({name: 'ThreadShow', params: {
+    id: props.id
   }})
 }
 </script>

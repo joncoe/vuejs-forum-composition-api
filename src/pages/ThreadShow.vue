@@ -28,7 +28,14 @@ const addPost = (e) => {
 </script>
 <template>
   <div class="col-large push-top">
-    <h2>{{ thread.title }}</h2>
+    <h1>{{ thread.title }}
+
+    <router-link
+      :to="{name: 'ThreadEdit', id: id}"
+      class="btn-green btn-small"
+      tag="button"
+    >Edit Thread</router-link>
+    </h1>
 
     <PostList :posts="threadPosts" />
     <PostEditor @save-post="addPost"/>

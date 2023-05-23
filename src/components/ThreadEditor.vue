@@ -1,5 +1,5 @@
 <script setup>
-import {defineEmits, reactive, defineProps} from 'vue'
+import {defineEmits, reactive, defineProps, computed} from 'vue'
 
 const props = defineProps({
   text: {
@@ -26,6 +26,10 @@ const cancel = () => {
   emit('cancel')
 }
 
+const existing = computed(() => {
+  return !!props.title;
+})
+
 </script>
 <template>
   <form @submit.prevent="save">
@@ -41,7 +45,7 @@ const cancel = () => {
 
     <div class="btn-group">
       <button class="btn btn-ghost" @click.prevent="cancel">Cancel</button>
-      <button class="btn btn-blue" type="submit" name="Publish">Publish </button>
+      <button class="btn btn-blue" type="submit" name="Publish">{{existing ? 'Update' : 'Publish'}}</button>
     </div>
   </form>
 </template>
