@@ -1,10 +1,9 @@
 <script setup>
 import { computed, defineProps } from 'vue';
 import {useStore} from 'vuex';
-import { findById } from '@/helpers';
 
 const store = useStore();
-const users = computed(() => store.state.users);
+// const users = computed(() => store.state.users);
 
 defineProps({
   posts: {
@@ -14,7 +13,7 @@ defineProps({
 })
 
 const userById = (userId) => {
-  return findById(users.value, userId);
+  return store.getters.user(userId)
 };
 
 </script>
@@ -31,7 +30,8 @@ const userById = (userId) => {
           <img class="avatar-large" :src="userById(post.userId).avatar" alt="" />
         </a>
 
-        <p class="desktop-only text-small">107 posts 🌗</p>
+        <p class="desktop-only text-small">{{userById(post.userId).postsCount}} posts 🌗</p>
+        <p class="desktop-only text-small">{{userById(post.userId).threadCount}} threads 🪡</p>
       </div>
 
       <div class="post-content">

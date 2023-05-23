@@ -16,7 +16,7 @@ const forum = computed(() => {
   return store.state.forums.find(forum => forum.id === props.id)
 })
 const threads = computed(() => {
-  return store.state.threads.filter(thread => thread.forumId === props.id)
+  return forum.value.threads ? forum.value.threads.map(threadId => store.getters.thread(threadId)) : []
 })
 
 </script>
