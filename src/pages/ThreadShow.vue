@@ -33,7 +33,6 @@ const addPost = (e) => {
     <router-link
       :to="{name: 'ThreadEdit', id: id}"
       class="btn-green btn-small"
-      tag="button"
     >Edit Thread</router-link>
     </h1>
 
