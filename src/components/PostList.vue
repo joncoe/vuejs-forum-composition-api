@@ -1,5 +1,5 @@
 <script setup>
-import { computed, defineProps } from 'vue';
+import { defineProps } from 'vue';
 import {useStore} from 'vuex';
 
 const store = useStore();
