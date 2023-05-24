@@ -1,21 +1,22 @@
 <script async setup>
-import {useStore} from 'vuex';
+import { useStore } from 'vuex';
 import TheNavBar from './components/TheNavBar.vue';
 
 const store = useStore();
-console.log(store.state.authId)
 store.dispatch('fetchAuthUser')
 
 
 </script>
 
 <template>
-  <TheNavBar/>
-  <div class="container">
-    <suspense>
-      <router-view/>
-    </suspense>
-  </div>
+  <suspense>
+    <div>
+      <TheNavBar />
+      <div class="container">
+        <router-view />
+      </div>
+    </div>
+  </suspense>
 </template>
 
 
