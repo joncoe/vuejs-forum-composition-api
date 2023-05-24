@@ -1,4 +1,4 @@
-<script setup>
+<script async setup>
 import { defineProps, computed } from 'vue';
 import {useStore} from 'vuex';
 import ThreadList from '@/components/ThreadList.vue';
@@ -12,16 +12,14 @@ const props = defineProps({
   }
 })
 
-const forum = computed(() => {
-  return store.state.forums.find(forum => forum.id === props.id)
-})
-const threads = computed(() => {
-  return forum.value.threads ? forum.value.threads.map(threadId => store.getters.thread(threadId)) : []
-})
+const forum = await store.dispatch('fetchForum', {id: props.id});
+const threads = await store.dispatch('fetchThreads', { ids: forum.threads})
+const users = await store.dispatch('fetchUsers', { ids: threads.map(thread => thread.userId)});
+
 
 </script>
 <template>
-    <div class="col-full push-top">
+    <div v-if="forum" class="col-full push-top">
       <div class="forum-header">
         <div class="forum-details">
           <h1>{{forum.name}}</h1>
@@ -38,9 +36,6 @@ const threads = computed(() => {
         </router-link>
       </div>
     </div>
-
-
-
     <div class="col-full push-top">
 
       <ThreadList :threads="threads"/>

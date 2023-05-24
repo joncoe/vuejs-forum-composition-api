@@ -14,7 +14,7 @@ const props = defineProps({
 })
 
 const userById = (userId) => {
-  return findById(users.value, userId);
+  return findById(users.value, userId) || {};
 };
 
 </script>
@@ -38,7 +38,7 @@ const userById = (userId) => {
               </router-link>
             </p>
             <p class="text-faded text-xsmall">
-              By <a href="profile.html">{{userById(thread.userId).name}}</a>, {{thread.pubishedAt}}.
+              By <a href="profile.html">{{userById(thread.userId).name}}</a>, <AppDate :timestamp="thread.publishedAt"/>.
             </p>
           </div>
 

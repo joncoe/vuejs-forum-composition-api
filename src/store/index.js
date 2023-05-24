@@ -100,6 +100,9 @@ export default createStore({
     fetchThread({ dispatch }, { id }) {
       return dispatch('fetchItem', {resource: 'threads', id, emoji: '🧵 🧵 🧵'});
     },
+    fetchForum({ dispatch }, { id }) {
+      return dispatch('fetchItem', {resource: 'forums', id, emoji: '🚌 🚌 🚌 '});
+    },
     fetchUser({ dispatch }, { id }) {
       return dispatch('fetchItem', {resource: 'users', id, emoji: '👨🏼 🤦🏼‍♀️'});
     },
@@ -176,12 +179,14 @@ export default createStore({
     thread: (state) => {
       return (id) => {
         const thread = findById(state.threads, id);
+        if (!thread) return {};
         return {
           ...thread,
           get author() {
             return findById(state.users, thread.userId);
           },
           get repliesCount() {
+            console.log('replies count', id)
             return thread.posts.length - 1;
           },
           get contributorsCount() {
