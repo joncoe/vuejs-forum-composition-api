@@ -23,7 +23,8 @@ const toggleEditMode = (id) => {
 }
 
 const updatePost = ({text, id}) => {
-  store.dispatch('updatePost', {text, id})
+  store.dispatch('updatePost', {text, id});
+  editing.value = null;
 }
 
 </script>
@@ -54,6 +55,7 @@ const updatePost = ({text, id}) => {
           </p>
         </div>
         <a
+          v-if="post.userId === store.state.authId"
           href="#" style="margin-left: auto; padding-left:10px;"
           class="link-unstyled"
           title="Make a change"
@@ -64,6 +66,7 @@ const updatePost = ({text, id}) => {
       </div>
 
       <div class="post-date text-faded">
+        <div v-if="post.edited?.at">Edited</div>
         <AppDate :timestamp="post.publishedAt"/>
       </div>
 
