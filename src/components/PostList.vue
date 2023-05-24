@@ -1,9 +1,8 @@
 <script setup>
-import { computed, defineProps } from 'vue';
+import { defineProps } from 'vue';
 import {useStore} from 'vuex';
 
 const store = useStore();
-// const users = computed(() => store.state.users);
 
 defineProps({
   posts: {

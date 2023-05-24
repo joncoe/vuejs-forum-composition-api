@@ -19,7 +19,7 @@ const thread = computed(() => {
   return findById(store.state.threads, props.id);
 })
 const text = computed(() => {
-  return findById(store.state.posts, thread.value.posts[0]);
+  return findById(store.state.posts, thread.value.posts[0]).text;
 })
 
 const save = async ({title, text}) => {
