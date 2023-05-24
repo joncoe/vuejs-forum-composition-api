@@ -8,18 +8,25 @@ dayjs.extend(localizedFormat);
 
 const props = defineProps({
   timestamp: {
-    type: String,
+    type: [String, Object],
     required: true
   }
 })
 
+const normalizedTimestamp = computed(() => {
+  console.log(props.timestamp)
+  return props.timestamp?.seconds || props.timestamp
+})
+
 const diffForHumans = computed(() => {
-  return dayjs.unix(props.timestamp).fromNow();
+  return dayjs.unix(normalizedTimestamp.value).fromNow();
 })
 
 const humanFriendlyDate = computed(() => {
-  return dayjs.unix(props.timestamp).format('llll');
+  return dayjs.unix(normalizedTimestamp.value).format('llll');
 })
+
+
 
 </script>
 

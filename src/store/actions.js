@@ -3,16 +3,12 @@ import { findById } from '@/helpers'
 export default {
   async createPost ({ commit, state }, post) {
     post.userId = state.authId
-    post.publishedAt = Math.floor(Date.now() / 1000)
-
-    const newPost = await firebase.firestore().collection('posts').add(post);
+    post.publishedAt = firebase.firestore.FieldValue.serverTimestamp();
 
     const batch = firebase.firestore().batch();
-
     const postRef = firebase.firestore().collection('posts').doc()
     const threadRef = firebase.firestore().collection('threads').doc(post.threadId)
     batch.set(postRef, post);
-
     batch.update(threadRef, {
       posts: firebase.firestore.FieldValue.arrayUnion(postRef.id),
       contributors: firebase.firestore.FieldValue.arrayUnion(state.authId),
@@ -20,8 +16,9 @@ export default {
 
     await batch.commit()
 
+    const newPost = await postRef.get();
 
-    commit('setItem', { resource: 'posts', item: {...post, id: postRef.id} }) // set the postRef
+    commit('setItem', { resource: 'posts', item: {...newPost.data(), id: postRef.id} }) // set the postRef
     commit('appendPostToThread', { childId: postRef.id, parentId: post.threadId }) // append newPost to thread
     commit('appendContributorToThread', { childId: state.authId, parentId: post.threadId })
 
