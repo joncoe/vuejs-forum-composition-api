@@ -100,6 +100,9 @@ export default createStore({
     fetchThread({ dispatch }, { id }) {
       return dispatch('fetchItem', {resource: 'threads', id, emoji: '🧵 🧵 🧵'});
     },
+    fetchCategory({ dispatch }, { id }) {
+      return dispatch('fetchItem', {resource: 'categories', id, emoji: '🧵 🧵 🧵'});
+    },
     fetchForum({ dispatch }, { id }) {
       return dispatch('fetchItem', {resource: 'forums', id, emoji: '🚌 🚌 🚌 '});
     },

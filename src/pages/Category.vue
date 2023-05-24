@@ -1,8 +1,7 @@
-<script setup>
-import { defineProps, computed } from 'vue';
+<script async setup>
+import { defineProps } from 'vue';
 import {useStore} from 'vuex';
 import ForumList from '@/components/ForumList.vue';
-import { findById } from '@/helpers';
 
 const store = useStore();
 
@@ -13,14 +12,9 @@ const props = defineProps({
   }
 })
 
-const category = computed(() => {
-  return findById(store.state.categories, props.id);
-})
+const category = await store.dispatch('fetchCategory', {id: props.id})
+const forums = await store.dispatch('fetchForums', {ids: category.forums})
 
-
-const getForumsForCategory = (category) => {
-  return store.state.forums.filter(forum => forum.categoryId === category.id)
-}
 
 </script>
 
@@ -29,7 +23,7 @@ const getForumsForCategory = (category) => {
     <h1>{{ category.name }}</h1>
     <ForumList
       :title="category.name"
-      :forums="getForumsForCategory(category)"
+      :forums="forums"
     />
   </div>
 </template>
