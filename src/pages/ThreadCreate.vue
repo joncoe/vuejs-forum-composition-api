@@ -1,9 +1,8 @@
-<script setup>
-import {defineProps, computed} from 'vue';
+<script async setup>
+import {defineProps } from 'vue';
 import ThreadEditor from '@/components/ThreadEditor.vue';
 import {useRouter} from 'vue-router';
 import { useStore } from 'vuex';
-import { findById } from '@/helpers';
 
 const props = defineProps({
   forumId: {
@@ -15,9 +14,7 @@ const props = defineProps({
 const store = useStore();
 let router = useRouter();
 
-const forum = computed(() => {
-  return findById(store.state.forums, props.forumId);//
-})
+const forum = await store.dispatch('fetchForum', props.forumId)
 
 const save = async ({title, text}) => {
   const thread = await store.dispatch('createThread', {
@@ -31,13 +28,13 @@ const save = async ({title, text}) => {
 }
 const cancel = () => {
   router.push({name: 'Forum', params: {
-    id: forum.value.id
+    id: forum.id
   }})
 }
 </script>
 
 <template>
-  <div class="col-full push-top">
+  <div v-if="forum" class="col-full push-top">
 
     <h1>Create new thread in <i>{{forum.name}}</i></h1>
 

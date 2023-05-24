@@ -1,9 +1,8 @@
-<script setup>
+<script async setup>
 import {defineProps, computed} from 'vue';
 import ThreadEditor from '@/components/ThreadEditor.vue';
 import {useRouter} from 'vue-router';
 import { useStore } from 'vuex';
-import { findById } from '@/helpers';
 
 const props = defineProps({
   id: {
@@ -15,12 +14,10 @@ const props = defineProps({
 const store = useStore();
 let router = useRouter();
 
-const thread = computed(() => {
-  return findById(store.state.threads, props.id);
-})
-const text = computed(() => {
-  return findById(store.state.posts, thread.value.posts[0]).text;
-})
+
+const thread = await store.dispatch('fetchThread', {id: props.id});
+const post = await store.dispatch('fetchPost', {id: thread.posts[0]})
+
 
 const save = async ({title, text}) => {
   const thread = await store.dispatch('updateThread', {
@@ -40,11 +37,11 @@ const cancel = () => {
 </script>
 
 <template>
-  <div class="col-full push-top">
+  <div v-if="thread" class="col-full push-top">
 
     <h1>Editing <i>{{thread.title}}</i></h1>
 
-    <ThreadEditor :title="thread.title" :text="text" @save="save" @cancel="cancel"/>
+    <ThreadEditor :title="thread.title" :text="post.text" @save="save" @cancel="cancel"/>
 
   </div>
 </template>
