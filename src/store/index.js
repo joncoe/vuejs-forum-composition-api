@@ -95,6 +95,17 @@ export default createStore({
     },
     fetchItems ({ dispatch }, {ids, resource, emoji}) {
       return Promise.all(ids.map(id => dispatch('fetchItem', { id, resource, emoji })))
+    },
+    fetchAllCategories ({commit}) {
+      console.log('Fetch all 😸egories')
+      return new Promise(resolve => {
+        firebase.firestore().collection('categories').onSnapshot((querySnapshot) => {
+          const categories = querySnapshot.docs.map(doc => {
+            return { id: doc.id, ...doc.data()}
+          })
+          resolve(categories)
+        })
+      })
     }
   },
   mutations: {
