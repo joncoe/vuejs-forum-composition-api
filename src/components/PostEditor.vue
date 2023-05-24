@@ -1,17 +1,22 @@
 <script setup>
-import { ref, defineEmits } from 'vue';
+import { ref, defineEmits, defineProps, reactive } from 'vue';
 
 const emit = defineEmits(['save-post']);
+const props = defineProps({
+  post: {
+    type: Object,
+    default: () => ({text: null})
+  }
+})
 
-const postText = ref("")
+
+const postCopy = reactive({
+  ...props.post
+})
 
 const savePost = () => {
-  const post = {
-    text: postText.value,
-    threadId: null,
-  }
-  emit('save-post', { post })
-  postText.value = "";
+  console.log('hi')
+  emit('save-post', { postCopy })
 }
 
 
@@ -28,13 +33,13 @@ const savePost = () => {
           rows="8"
           cols="140"
           placeholder="Enter your post."
-          v-model="postText"
+          v-model="postCopy.text"
         />
       </div>
 
       <div class="btn-group">
         <button class="btn btn-ghost">Cancel</button>
-        <button class="btn btn-blue" type="submit" name="Publish">Publish </button>
+        <button class="btn btn-blue" type="submit" name="Publish">{{post.id ? 'Update Post' : 'Submit and Save'}} </button>
       </div>
     </form>
   </div>

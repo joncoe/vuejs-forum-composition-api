@@ -1,8 +1,11 @@
 <script setup>
-import { defineProps } from 'vue';
+import { defineProps,ref } from 'vue';
 import {useStore} from 'vuex';
+import PostEditor from './PostEditor.vue';
 
 const store = useStore();
+
+const editing = ref(null);
 
 defineProps({
   posts: {
@@ -14,6 +17,10 @@ defineProps({
 const userById = (userId) => {
   return store.getters.user(userId)
 };
+
+const toggleEditMode = (id) => {
+  editing.value = id === editing.value ? null : id;
+}
 
 </script>
 
@@ -34,12 +41,20 @@ const userById = (userId) => {
       </div>
 
       <div class="post-content">
-        <div>
+        <div v-if="editing === post.id" class="col-full">
+          <PostEditor :post="post"/>
+        </div>
+        <div v-else>
           <p>
             {{ post.text }}
           </p>
         </div>
-        <a href="#" style="margin-left: auto; padding-left:10px;" class="link-unstyled" title="Make a change">
+        <a
+          href="#" style="margin-left: auto; padding-left:10px;"
+          class="link-unstyled"
+          title="Make a change"
+          @click.prevent="toggleEditMode(post.id)"
+          >
           <fa icon="pencil-alt" />
         </a>
       </div>
