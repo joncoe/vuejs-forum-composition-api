@@ -16,6 +16,9 @@ thread.posts.forEach(async (postId) => {
   store.dispatch('fetchUser', {id: post.userId})
 })
 
+const currentThread = (id) => {
+  return store.getters.thread(id)
+}
 
 const threadPosts = computed(() => {
   return store.state.posts;
@@ -46,8 +49,8 @@ const addPost = (e) => {
       <span
         style="float:right; margin-top: 2px;"
         class="hide-mobile text-faded text-small">
-          {{thread.repliesCount}} replies by
-          {{thread.contributorsCount}} contributors
+          {{currentThread(thread.id).repliesCount}} replies by
+          {{currentThread(thread.id).contributorsCount}} contributors
       </span>
     </p>
 
