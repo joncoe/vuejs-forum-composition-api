@@ -18,7 +18,7 @@ export default {
     })
 
     batch.update(userRef, {
-      postsCount: firebase.firestone.FieldValue.increment(1)
+      postsCount: firebase.firestore.FieldValue.increment(1)
     })
 
     await batch.commit()
