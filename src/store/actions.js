@@ -83,6 +83,22 @@ export default {
   updateUser ({ commit }, user) {
     commit('setItem', { resource: 'users', item: user })
   },
+  async updatePost ({ commit, state }, { text, id }) {
+    console.log(text, id)
+    const post = {
+      text,
+      edited: {
+        at: firebase.firestore.FieldValue.serverTimestamp(),
+        by: state.authId,
+        moderated: false,
+      }
+    }
+
+    const postRef = firebase.firestore().collection('posts').doc(id);
+    await postRef.update(post);
+    const updatedPost = await postRef.get();
+    commit ('setItem', {resource: 'posts', item: updatedPost})
+  },
   // ---------------------------------------
   // Fetch Single Resource
   // ---------------------------------------

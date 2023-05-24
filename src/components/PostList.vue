@@ -22,6 +22,10 @@ const toggleEditMode = (id) => {
   editing.value = id === editing.value ? null : id;
 }
 
+const updatePost = ({text, id}) => {
+  store.dispatch('updatePost', {text, id})
+}
+
 </script>
 
 
@@ -42,7 +46,7 @@ const toggleEditMode = (id) => {
 
       <div class="post-content">
         <div v-if="editing === post.id" class="col-full">
-          <PostEditor :post="post"/>
+          <PostEditor :post="post" @save-post="updatePost"/>
         </div>
         <div v-else>
           <p>

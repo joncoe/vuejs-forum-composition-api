@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineEmits, defineProps, reactive } from 'vue';
+import { defineEmits, defineProps, reactive } from 'vue';
 
 const emit = defineEmits(['save-post']);
 const props = defineProps({
@@ -15,8 +15,8 @@ const postCopy = reactive({
 })
 
 const savePost = () => {
-  console.log('hi')
-  emit('save-post', { postCopy })
+  const post = {...postCopy}
+  emit('save-post', post )
 }
 
 
