@@ -7,18 +7,29 @@ import PostEditor from "@/components/PostEditor.vue";
 import AppDate from "@/components/AppDate.vue";
 
 const store = useStore();
-
-const posts = computed(() => store.state.posts);
-
-const thread = await store.dispatch('fetchThread', {id: props.id})
-
 const props = defineProps(['id'])
 
 
+const thread = store.dispatch('fetchThread', {id: props.id})
+// const posts = computed(store.thread.posts);
+
+thread.then((data) => {
+  store.dispatch('fetchUser', {id: thread.userId})
+  data.posts.forEach((postId) => {
+    const post = store.dispatch('fetchPost', {id: postId})
+    console.log(post)
+    post.then((data) => {
+      store.dispatch('fetchUser', {id: data.userId})
+    })
+    // posts.value = store.posts;
+  })
+})
+
 
 const threadPosts = computed(() => {
-  return posts.value.filter(post => post.threadId === props.id)
+  return store.state.posts;
 })
+
 const addPost = (e) => {
   const post = {
     ...e.post,
@@ -29,6 +40,8 @@ const addPost = (e) => {
 
 </script>
 <template>
+
+
   <div class="col-large push-top">
     <h1>{{ thread.title }}
       <router-link
@@ -51,6 +64,7 @@ const addPost = (e) => {
     <PostEditor @save-post="addPost"/>
 
   </div>
+
 </template>
 
 
