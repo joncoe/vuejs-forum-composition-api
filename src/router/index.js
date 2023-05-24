@@ -7,9 +7,6 @@ import Forum from '@/pages/Forum';
 import ThreadCreate from '@/pages/ThreadCreate';
 import ThreadEdit from '@/pages/ThreadEdit';
 import {createRouter, createWebHistory } from 'vue-router';
-import sourceData from "@/data.json";
-import { findById } from '@/helpers';
-
 const routes = [
   {
     path: "/",
