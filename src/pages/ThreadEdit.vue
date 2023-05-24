@@ -1,5 +1,5 @@
 <script async setup>
-import {defineProps, computed} from 'vue';
+import {defineProps } from 'vue';
 import ThreadEditor from '@/components/ThreadEditor.vue';
 import {useRouter} from 'vue-router';
 import { useStore } from 'vuex';
@@ -16,7 +16,7 @@ let router = useRouter();
 
 
 const thread = await store.dispatch('fetchThread', {id: props.id});
-const post = await store.dispatch('fetchPost', {id: thread.posts[0]})
+const post = await store.dispatch('fetchPost', {id: thread.posts[0]}) || '';
 
 
 const save = async ({title, text}) => {
@@ -37,7 +37,7 @@ const cancel = () => {
 </script>
 
 <template>
-  <div v-if="thread" class="col-full push-top">
+  <div v-if="thread && post" class="col-full push-top">
 
     <h1>Editing <i>{{thread.title}}</i></h1>
 
