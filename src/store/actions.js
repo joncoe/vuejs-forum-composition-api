@@ -7,13 +7,22 @@ export default {
 
     const newPost = await firebase.firestore().collection('posts').add(post);
 
-    await firebase.firestore().collection('threads').doc(post.threadId).update({
-      posts: firebase.firestore.FieldValue.arrayUnion(newPost.id),
-      contributors: firebase.firestore.FieldValue.arrayUnion(state.authId),
+    const batch = firebase.firestore().batch();
 
+    const postRef = firebase.firestore().collection('posts').doc()
+    const threadRef = firebase.firestore().collection('threads').doc(post.threadId)
+    batch.set(postRef, post);
+
+    batch.update(threadRef, {
+      posts: firebase.firestore.FieldValue.arrayUnion(postRef.id),
+      contributors: firebase.firestore.FieldValue.arrayUnion(state.authId),
     })
-    commit('setItem', { resource: 'posts', item: {...post, id: newPost.id} }) // set the newPost
-    commit('appendPostToThread', { childId: newPost.id, parentId: newPost.threadId }) // append newPost to thread
+
+    await batch.commit()
+
+
+    commit('setItem', { resource: 'posts', item: {...post, id: postRef.id} }) // set the postRef
+    commit('appendPostToThread', { childId: postRef.id, parentId: post.threadId }) // append newPost to thread
     commit('appendContributorToThread', { childId: state.authId, parentId: post.threadId })
 
     return newPost;
