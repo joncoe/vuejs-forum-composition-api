@@ -21,6 +21,12 @@ export default {
     if (log) console.log('setItem', resource, item)
     upsert(state[resource], docToResource(item));
   },
+  addSubscription(state, {unsubscribe}) {
+    state.subscriptions.push(unsubscribe)
+  },
+  cancelSubscriptions(state) {
+    state.subscriptions = [];
+  },
 }
 
 function makeAppendChildToParentMutation({ parent, child }) {

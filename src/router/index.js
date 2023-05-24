@@ -7,6 +7,7 @@ import Forum from '@/pages/Forum';
 import ThreadCreate from '@/pages/ThreadCreate';
 import ThreadEdit from '@/pages/ThreadEdit';
 import {createRouter, createWebHistory } from 'vue-router';
+import store from '@/store';
 const routes = [
   {
     path: "/",
@@ -100,4 +101,7 @@ const router = createRouter({
   }
 })
 
+router.beforeEach(() => {
+  store.dispatch('unsubscribeAllSnapshots')
+})
 export default router;
