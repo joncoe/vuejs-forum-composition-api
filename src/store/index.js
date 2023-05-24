@@ -60,6 +60,43 @@ export default createStore({
       console.log('updateThread', newThread)
       return newThread;
     },
+    // ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐
+    // Fetch ALL of a  resource
+    // ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐
+    fetchAllCategories ({commit}) {
+      console.log('Fetch all 😸egories')
+      return new Promise(resolve => {
+        firebase.firestore().collection('categories').onSnapshot((querySnapshot) => {
+          const categories = querySnapshot.docs.map(doc => {
+            const item =  { id: doc.id, ...doc.data()}
+            commit('setItem', {resource: 'categories', item})
+            return item;
+          })
+          resolve(categories)
+        })
+      })
+    },
+    // ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐
+    // Fetch multiple resources
+    // ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐
+    fetchCategories ({ dispatch }, { ids }) {
+      return dispatch('fetchItems', { resource: 'categories', ids, emoji: '🏷' })
+    },
+    fetchThreads({dispatch}, {ids}) {
+      return dispatch('fetchItems', {resource: 'threads', ids, emoji: '🪡 🪡 🪡'})
+    },
+    fetchForums({dispatch}, {ids}) {
+      return dispatch('fetchItems', {resource: 'forums', ids, emoji: '◖ᵔᴥᵔ◗ ♪ ♫'})
+    },
+    fetchPosts({dispatch}, {ids}) {
+      return dispatch('fetchItems', {resource: 'posts', ids, emoji: '💬 💬 💬'})
+    },
+    fetchUsers({dispatch}, {ids}) {
+      return dispatch('fetchItems', {resource: 'users', ids, emoji: '🧘🏼‍♂️ 🧘🏼‍♂️ 🧘🏼‍♂️'})
+    },
+    // ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐
+    // Fetch SINGLE resources
+    // ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐
     fetchThread({ dispatch }, { id }) {
       return dispatch('fetchItem', {resource: 'threads', id, emoji: '🧵 🧵 🧵'});
     },
@@ -69,18 +106,7 @@ export default createStore({
     fetchPost({ dispatch }, { id }) {
       return dispatch('fetchItem', {resource: 'posts', id, emoji: '📝 📝 📝'});
     },
-    fetchThreads({dispatch}, {ids}) {
-      return dispatch('fetchItems', {resource: 'threads', ids, emoji: '🪡 🪡 🪡'})
-    },
-    fetchForums({dispatch}, {ids}) {
-      return dispatch('fetchItems', {resource: 'forums', ids, emoji: '◖ᵔᴥᵔ◗ ♪ ♫'})
-    },
-    fetchUsers({dispatch}, {ids}) {
-      return dispatch('fetchItems', {resource: 'users', ids, emoji: '🧘🏼‍♂️ 🧘🏼‍♂️ 🧘🏼‍♂️'})
-    },
-    fetchPosts({dispatch}, {ids}) {
-      return dispatch('fetchItems', {resource: 'posts', ids, emoji: '💬 💬 💬'})
-    },
+
     fetchItem({ commit }, { id, emoji, resource}) {
       console.log(emoji, resource)
       return new Promise((resolve) => {
@@ -99,19 +125,6 @@ export default createStore({
     fetchItems ({ dispatch }, {ids, resource, emoji}) {
       return Promise.all(ids.map(id => dispatch('fetchItem', { id, resource, emoji })))
     },
-    fetchAllCategories ({commit}) {
-      console.log('Fetch all 😸egories')
-      return new Promise(resolve => {
-        firebase.firestore().collection('categories').onSnapshot((querySnapshot) => {
-          const categories = querySnapshot.docs.map(doc => {
-            const item =  { id: doc.id, ...doc.data()}
-            commit('setItem', {resource: 'categories', item})
-            return item;
-          })
-          resolve(categories)
-        })
-      })
-    }
   },
   mutations: {
     appendPostToThread: makeAppendChildToParentMutation({
