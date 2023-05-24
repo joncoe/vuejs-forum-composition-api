@@ -1,5 +1,5 @@
 <script async setup>
-import { defineProps, computed } from 'vue';
+import { defineProps } from 'vue';
 import {useStore} from 'vuex';
 import ThreadList from '@/components/ThreadList.vue';
 
@@ -14,7 +14,7 @@ const props = defineProps({
 
 const forum = await store.dispatch('fetchForum', {id: props.id});
 const threads = await store.dispatch('fetchThreads', { ids: forum.threads})
-const users = await store.dispatch('fetchUsers', { ids: threads.map(thread => thread.userId)});
+await store.dispatch('fetchUsers', { ids: threads.map(thread => thread.userId)});
 
 
 </script>

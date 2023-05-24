@@ -11,3 +11,11 @@ export const upsert = (resourceSet, resourceToAdd) => {
     resourceSet.push(resourceToAdd) // append the resource to the set
   }
 }
+
+export const docToResource = (doc) => {
+  if (typeof doc?.data !== 'function') return  doc;
+  return {
+    ...doc.data(),
+    id: doc.ic
+  }
+}

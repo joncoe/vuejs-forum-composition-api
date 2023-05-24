@@ -1,4 +1,4 @@
-import { upsert, findById } from "@/helpers";
+import { upsert, findById, docToResource } from "@/helpers";
 
 export default {
   appendPostToThread: makeAppendChildToParentMutation({
@@ -19,7 +19,7 @@ export default {
   }),
   setItem (state, { resource, item, log }) {
     if (log) console.log('setItem', resource, item)
-    upsert(state[resource], item);
+    upsert(state[resource], docToResource(item));
   },
 }
 
