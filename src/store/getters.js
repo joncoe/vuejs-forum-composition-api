@@ -14,10 +14,10 @@ export default {
           return state.posts.filter((post) => post.userId === user.id);
         },
         get postsCount() {
-          return this.posts.length;
+          return user.postsCount || 0;
         },
         get threadCount() {
-          return this.threads.length;
+          return user.threads?.length || 0;
         },
         get threads() {
           return state.threads.filter((thread) => thread.userId === user.id);
