@@ -11,10 +11,11 @@ const props = defineProps(['id'])
 
 const thread = await store.dispatch('fetchThread', {id: props.id})
 const author = await store.dispatch('fetchUser', {id: thread.userId})
-thread.posts.forEach(async (postId) => {
-  const post = await store.dispatch('fetchPost', {id: postId});
-  store.dispatch('fetchUser', {id: post.userId})
-})
+
+const posts = await store.dispatch('fetchPosts', { ids: thread.posts });
+const users = posts.map(post => post.userId);
+store.dispatch('fetchUsers', { ids: users })
+
 
 const currentThread = (id) => {
   return store.getters.thread(id)
