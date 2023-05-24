@@ -1,4 +1,4 @@
-<script setup>
+<script setup async>
 import { computed, defineProps } from "vue";
 import {useStore} from 'vuex';
 
@@ -9,20 +9,11 @@ import AppDate from "@/components/AppDate.vue";
 const store = useStore();
 const props = defineProps(['id'])
 
-
-const thread = store.dispatch('fetchThread', {id: props.id})
-// const posts = computed(store.thread.posts);
-
-thread.then((data) => {
-  store.dispatch('fetchUser', {id: thread.userId})
-  data.posts.forEach((postId) => {
-    const post = store.dispatch('fetchPost', {id: postId})
-    console.log(post)
-    post.then((data) => {
-      store.dispatch('fetchUser', {id: data.userId})
-    })
-    // posts.value = store.posts;
-  })
+const thread = await store.dispatch('fetchThread', {id: props.id})
+const author = await store.dispatch('fetchUser', {id: thread.userId})
+thread.posts.forEach(async (postId) => {
+  const post = await store.dispatch('fetchPost', {id: postId});
+  store.dispatch('fetchUser', {id: post.userId})
 })
 
 
@@ -51,7 +42,7 @@ const addPost = (e) => {
     </h1>
 
     <p>
-      By <a href="#" class="link-unstyled">{{thread.author?.name}}</a>, <AppDate :timestamp="thread.publishedAt"/>.
+      By <a href="#" class="link-unstyled">{{author?.name}}</a>, <AppDate :timestamp="thread.publishedAt"/>.
       <span
         style="float:right; margin-top: 2px;"
         class="hide-mobile text-faded text-small">

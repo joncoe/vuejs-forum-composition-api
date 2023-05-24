@@ -1,12 +1,10 @@
 import { createStore } from "vuex";
-// import sourceData from "@/data.json";
 import firebase from "firebase";
 import { findById } from "@/helpers";
 import { upsert } from "@/helpers";
 
 export default createStore({
   state: {
-    // ...sourceData,
     categories: [],
     forums: [],
     threads: [],
@@ -62,7 +60,6 @@ export default createStore({
       return newThread;
     },
     fetchThread({ commit }, { id }) {
-      console.log("🔥🥼", id);
       return new Promise((resolve) => {
         firebase
         .firestore()
@@ -71,11 +68,36 @@ export default createStore({
         .onSnapshot((doc) => {
           const thread = { ...doc.data(), id: doc.id };
           commit("setThread", { thread });
+          resolve(thread);
+        });
+      })
+    },
+    fetchUser({ commit }, { id }) {
+      return new Promise((resolve) => {
+        firebase
+        .firestore()
+        .collection("users")
+        .doc(id)
+        .onSnapshot((doc) => {
+          const user = { ...doc.data(), id: doc.id };
+          commit("setUser", { user });
+          resolve(user);
+        });
+      })
+    },
+    fetchPost({ commit }, { id }) {
+      return new Promise((resolve) => {
+        firebase
+        .firestore()
+        .collection("posts")
+        .doc(id)
+        .onSnapshot((doc) => {
+          const post = { ...doc.data(), id: doc.id };
+          commit("setPost", { post });
+          resolve(post);
         });
 
-        resolve();
       })
-
     },
   },
   mutations: {
@@ -97,13 +119,14 @@ export default createStore({
     }),
 
     setUser(state, { user }) {
+      console.log("✅ setUser", user);
       upsert(state.users, user);
     },
     setPost(state, { post }) {
       upsert(state.posts, post);
     },
     setThread(state, { thread }) {
-      console.log("setThread", thread);
+      // console.log("setThread", thread);
       upsert(state.threads, thread);
     },
   },
