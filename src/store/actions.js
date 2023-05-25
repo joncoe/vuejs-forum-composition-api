@@ -25,11 +25,9 @@ export default {
 
     const newPost = await postRef.get();
 
-    commit('setItem', { resource: 'posts', item: {...newPost.data(), id: postRef.id} }) // set the postRef
-    commit('appendPostToThread', { childId: postRef.id, parentId: post.threadId }) // append newPost to thread
+    commit('setItem', { resource: 'posts', item: { ...newPost.data(), id: newPost.id } }) // set the post
+    commit('appendPostToThread', { childId: newPost.id, parentId: post.threadId }) // append post to thread
     commit('appendContributorToThread', { childId: state.authId, parentId: post.threadId })
-
-    return newPost;
   },
   async createThread ({ commit, state, dispatch }, { text, title, forumId }) {
     const userId = state.authId

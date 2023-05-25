@@ -25,9 +25,9 @@ const threadPosts = computed(() => {
   return store.state.posts;
 })
 
-const addPost = (e) => {
+const addPost = ({text}) => {
   const post = {
-    ...e.post,
+    text,
     threadId: props.id,
   }
   store.dispatch('createPost', post)
