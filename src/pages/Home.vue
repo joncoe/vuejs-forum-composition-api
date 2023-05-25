@@ -5,7 +5,8 @@ import CategoryList from '@/components/CategoryList.vue';
 const store = useStore();
 const categories = await store.dispatch('fetchAllCategories')
 const forumIds = categories.map(category => category.forums).flat();
-store.dispatch('fetchForums', { ids: forumIds })
+await store.dispatch('fetchForums', { ids: forumIds })
+
 
 
 </script>

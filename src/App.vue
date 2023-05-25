@@ -9,14 +9,23 @@ store.dispatch('fetchAuthUser')
 </script>
 
 <template>
-  <suspense>
     <div>
-      <TheNavBar />
+      <Suspense>
+        <TheNavBar />
+      </Suspense>
       <div class="container">
-        <router-view />
+        <router-view v-slot="{ Component }">
+          <Suspense>
+            <template #default>
+              <component :is="Component"></component>
+            </template>
+            <template #fallback>
+              Loading...
+            </template>
+          </Suspense>
+        </router-view>
       </div>
     </div>
-  </suspense>
 </template>
 
 
