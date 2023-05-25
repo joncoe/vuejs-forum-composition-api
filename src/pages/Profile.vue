@@ -1,10 +1,11 @@
 <script setup>
 import { computed, defineProps } from 'vue';
+import { onBeforeRouteUpdate } from 'vue-router';
 import { useStore } from 'vuex';
 
-import PostList from '@/components/PostList';
-import UserProfileCard from '@/components/UserProfileCard';
-import UserProfileCardEditor from '@/components/UserProfileCardEditor';
+// import PostList from '@/components/PostList';
+// import UserProfileCard from '@/components/UserProfileCard';
+// import UserProfileCardEditor from '@/components/UserProfileCardEditor';
 
 const store = useStore();
 const user = computed(() => store.getters.authUser);
@@ -21,10 +22,19 @@ defineProps({
   }
 })
 
+onBeforeRouteUpdate((to, from) => {
+  console.log('hi')
+  if (!store.state.authId) {
+    return { name: 'Home'}
+  }
+})
+
 
 </script>
 <template>
   <div class="container">
+    <h1>Profile page</h1>
+    <!--
     <div class="flex-grid">
       <div class="col-3 push-top">
 
@@ -48,6 +58,7 @@ defineProps({
 
       </div>
     </div>
+    -->
   </div>
 </template>
 

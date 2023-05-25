@@ -1,7 +1,7 @@
 <script async setup>
-import {defineProps } from 'vue';
+import {defineProps, ref } from 'vue';
 import ThreadEditor from '@/components/ThreadEditor.vue';
-import {useRouter} from 'vue-router';
+import {useRouter, onBeforeRouteLeave} from 'vue-router';
 import { useStore } from 'vuex';
 
 const props = defineProps({
@@ -14,6 +14,7 @@ const props = defineProps({
 const store = useStore();
 let router = useRouter();
 
+const formIsDirty = ref(false)
 
 const thread = await store.dispatch('fetchThread', {id: props.id});
 const post = await store.dispatch('fetchPost', {id: thread.posts[0]}) || '';
@@ -34,6 +35,16 @@ const cancel = () => {
     id: props.id
   }})
 }
+
+onBeforeRouteLeave(() => {
+  if (formIsDirty.value) {
+    const confirmed = window.confirm('Are you sure you want to leave? Unsaved changes will be lost!')
+    if (!confirmed) return false
+  }
+})
+const dirtyClean = (value) => {
+  formIsDirty.value = value
+}
 </script>
 
 <template>
@@ -41,7 +52,14 @@ const cancel = () => {
 
     <h1>Editing <i>{{thread.title}}</i></h1>
 
-    <ThreadEditor :title="thread.title" :text="post.text" @save="save" @cancel="cancel"/>
+    <ThreadEditor
+      :title="thread.title"
+      :text="post.text"
+      @save="save"
+      @cancel="cancel"
+      @dirty="dirtyClean(true)"
+      @clean="dirtyClean(false)"
+    />
 
   </div>
 </template>

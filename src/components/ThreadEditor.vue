@@ -1,5 +1,5 @@
 <script setup>
-import {defineEmits, reactive, defineProps, computed} from 'vue'
+import {defineEmits, reactive, defineProps, computed, watch} from 'vue'
 
 const props = defineProps({
   text: {
@@ -17,9 +17,10 @@ const form = reactive({
   text: props.text
 })
 
-const emit = defineEmits(['save', 'cancel']);
+const emit = defineEmits(['save', 'cancel', 'dirty', 'clean']);
 
 const save = () => {
+  emit('clean');
   emit('save', {...form})
 }
 const cancel = () => {
@@ -29,6 +30,18 @@ const cancel = () => {
 const existing = computed(() => {
   return !!props.title;
 })
+
+watch( () =>
+  form,
+  () => {
+    if (form.title !== props.title || form.text !== props.text) {
+      emit('dirty')
+    } else {
+      emit('clean')
+    }
+  },
+  {deep: true}
+)
 
 </script>
 <template>

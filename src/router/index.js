@@ -29,13 +29,17 @@ const routes = [
     props: true
   },
   {
-    path: '/me/',
+    path: '/me',
     name: 'Profile',
     component: Profile,
     meta: {
       toTop: true,
       smoothScroll: true
-    }
+    },
+    beforeEnter () {
+      console.log('yo')
+      if (!store.state.authId) return { name: 'Home' }
+    },
   },
   {
     path: '/me/edit',

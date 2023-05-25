@@ -17,6 +17,7 @@ const postCopy = reactive({
 const savePost = () => {
   const post = {...postCopy}
   emit('save-post', post )
+  postCopy.text = '';
 }
 
 
