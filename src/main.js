@@ -17,9 +17,8 @@ forumApp.component('AppDate', AppDate)
 forumApp.mount('#app');
 
 firebase.auth().onAuthStateChanged(async user => {
-  console.log(vuexStore, user)
+  vuexStore.dispatch('unsubscribeAuthUserSnapshot')
   if (user) {
-
     vuexStore.dispatch('fetchAuthUser')
   }
 })

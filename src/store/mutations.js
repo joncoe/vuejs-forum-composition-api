@@ -30,6 +30,9 @@ export default {
   setAuthId (state, id) {
     state.authId = id
   },
+  setAuthUserUnsubscribe (state, unsubscribe) {
+    state.authUserUnsubscribe = unsubscribe
+  },
 }
 
 function makeAppendChildToParentMutation({ parent, child }) {
