@@ -33,6 +33,9 @@ export default {
   setAuthUserUnsubscribe (state, unsubscribe) {
     state.authUserUnsubscribe = unsubscribe
   },
+  setAuthObserverUnsubscribe (state, unsubscribe) {
+    state.authObserverUnsubscribe = unsubscribe
+  },
 }
 
 function makeAppendChildToParentMutation({ parent, child }) {

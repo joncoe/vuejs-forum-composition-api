@@ -34,11 +34,9 @@ const routes = [
     component: Profile,
     meta: {
       toTop: true,
-      smoothScroll: true
-    },
-    beforeEnter () {
-      if (!store.state.authId) return { name: 'Home' }
-    },
+      smoothScroll: true,
+      requiresAuth: true
+    }
   },
   {
     path: '/me/edit',
@@ -59,7 +57,9 @@ const routes = [
     props: true,
     // beforeEnter(to, from, next) {
     //   // check if exits
-    //   const threadExists = findById(sourceData.threads, to.params.id);//
+
+    //   const threadExists = store.dispatch('fetchThread', {resource: 'threads', id: to.params.id});//
+    //   console.log('threadExists', threadExists)
     //   // continue
     //   if (threadExists) {
     //     return next()
@@ -124,7 +124,12 @@ const router = createRouter({
   }
 })
 
-router.beforeEach(() => {
-  store.dispatch('unsubscribeAllSnapshots')
+router.beforeEach(async (to, from) => {
+  await store.dispatch('initAuthentication')
+  console.log(`navigating from ${from.path} to ${to.path}`)
+  store.dispatch('unsubscribeAllSnapshots');
+  if (to.meta.requiresAuth && !store.state.authId) {
+    return { name: 'Home' }
+  }
 })
 export default router;

@@ -15,11 +15,3 @@ forumApp.use(vuexStore)
 forumApp.use(FontAwesome)
 forumApp.component('AppDate', AppDate)
 forumApp.mount('#app');
-
-firebase.auth().onAuthStateChanged(async user => {
-  vuexStore.dispatch('unsubscribeAuthUserSnapshot')
-  if (user) {
-    vuexStore.dispatch('fetchAuthUser')
-  }
-})
-
