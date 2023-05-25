@@ -37,7 +37,6 @@ const routes = [
       smoothScroll: true
     },
     beforeEnter () {
-      console.log('yo')
       if (!store.state.authId) return { name: 'Home' }
     },
   },
@@ -98,6 +97,14 @@ const routes = [
     name: 'ThreadEdit',
     component: ThreadEdit,
     props: true
+  },
+  {
+    path: '/logout',
+    name: 'SignOut',
+    async beforeEnter (to, from) {
+      await store.dispatch('signOut')
+      return { name: 'Home' }
+    }
   },
   {
     path: '/:pathMatch(.*)*',
