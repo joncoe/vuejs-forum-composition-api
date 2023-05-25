@@ -192,18 +192,22 @@ export default {
   fetchPosts: ({ dispatch }, { ids }) => dispatch('fetchItems', { resource: 'posts', ids, emoji: '💬' }),
   fetchUsers: ({ dispatch }, { ids }) => dispatch('fetchItems', { resource: 'users', ids, emoji: '🙋' }),
 
-  fetchItem ({ commit }, { id, emoji, resource, handleUnsubscribe = null }) {
+  fetchItem ({ state, commit }, { id, emoji, resource, handleUnsubscribe = null }) {
     console.log('🔥', emoji, id)
     return new Promise((resolve) => {
       const unsubscribe = firebase.firestore().collection(resource).doc(id).onSnapshot((doc) => {
-        const item = { ...doc.data(), id: doc.id }
-        commit('setItem', { resource, item })
-        resolve(item)
+        if (doc.exists) {
+          const item = { ...doc.data(), id: doc.id }
+          commit('setItem', { resource, item })
+          resolve(item)
+        } else {
+          resolve(null)
+        }
       })
       if (handleUnsubscribe) {
         handleUnsubscribe(unsubscribe)
       } else {
-        commit('addSubscription', {unsubscribe})
+        commit('appendUnsubscribe', { unsubscribe })
       }
     })
   },
