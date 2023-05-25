@@ -16,6 +16,6 @@ export const docToResource = (doc) => {
   if (typeof doc?.data !== 'function') return  doc;
   return {
     ...doc.data(),
-    id: doc.ic
+    id: doc.id
   }
 }
