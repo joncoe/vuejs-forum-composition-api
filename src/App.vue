@@ -1,6 +1,7 @@
 <script async setup>
 import { useStore } from 'vuex';
 import TheNavBar from './components/TheNavBar.vue';
+import AppSpinner from './components/AppSpinner.vue';
 
 const store = useStore();
 store.dispatch('fetchAuthUser')
@@ -20,7 +21,7 @@ store.dispatch('fetchAuthUser')
               <component :is="Component"></component>
             </template>
             <template #fallback>
-              Loading...
+              <AppSpinner/>
             </template>
           </Suspense>
         </router-view>
