@@ -27,6 +27,9 @@ export default {
   cancelSubscriptions(state) {
     state.subscriptions = [];
   },
+  setAuthId (state, id) {
+    state.authId = id
+  },
 }
 
 function makeAppendChildToParentMutation({ parent, child }) {
