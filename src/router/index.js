@@ -6,7 +6,8 @@ import NotFound from '@/pages/NotFound';
 import Forum from '@/pages/Forum';
 import ThreadCreate from '@/pages/ThreadCreate';
 import ThreadEdit from '@/pages/ThreadEdit';
-import Register from '@/pages/Register'
+import Register from '@/pages/Register';
+import SignIn from '@/pages/SignIn'
 import {createRouter, createWebHistory } from 'vue-router';
 import store from '@/store';
 const routes = [
@@ -76,6 +77,11 @@ const routes = [
     path: '/register',
     name: 'Register',
     component: Register
+  },
+  {
+    path: '/signin',
+    name: 'SignIn',
+    component: SignIn
   },
   {
     path: '/forum/:forumId/thread/create',
