@@ -19,6 +19,11 @@ const signIn = async () => {
   }
 }
 
+const signInWithGoogle = async () => {
+  await store.dispatch('signInWithGoogle')
+  router.push({name: 'Home'})
+}
+
 </script>
 <template>
   <div class="flex-grid justify-center">
@@ -45,7 +50,7 @@ const signIn = async () => {
       </form>
 
       <div class="push-top text-center">
-        <button class="btn-red btn-xsmall">
+        <button @click="signInWithGoogle" class="btn-red btn-xsmall">
           <i class="fa fa-google fa-btn"></i>Sign in with Google
         </button>
       </div>
