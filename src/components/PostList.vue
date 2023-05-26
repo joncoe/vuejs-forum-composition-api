@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps,ref } from 'vue';
+import { defineProps,ref, computed } from 'vue';
 import {useStore} from 'vuex';
 import PostEditor from './PostEditor.vue';
 
@@ -55,7 +55,7 @@ const updatePost = ({text, id}) => {
           </p>
         </div>
         <a
-          v-if="post.userId === store.state.authId"
+          v-if="post.userId === store.state.auth.authId"
           href="#" style="margin-left: auto; padding-left:10px;"
           class="link-unstyled"
           title="Make a change"

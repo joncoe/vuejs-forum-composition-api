@@ -8,9 +8,8 @@ import UserProfileCard from '@/components/UserProfileCard';
 import UserProfileCardEditor from '@/components/UserProfileCardEditor';
 
 const store = useStore();
-const user = computed(() => store.getters.auth.authUser);
+const user = computed(() => store.getters['auth/authUser']);
 
-await store.dispatch('auth/fetchAuthUsersPosts');
 
 defineProps({
   id: {
@@ -25,12 +24,17 @@ defineProps({
 })
 
 onBeforeRouteUpdate(() => {
-  console.log('hi')
   if (!store.state.authId) {
     return { name: 'Home'}
   }
 })
 
+const lastPostFetched = computed(() => {
+  if (user.value.posts.length === 0) return null
+  return user.value.posts[user.value.posts.length - 1]
+})
+
+await store.dispatch('auth/fetchAuthUsersPosts', {startAfter: lastPostFetched.value})
 
 </script>
 <template>
