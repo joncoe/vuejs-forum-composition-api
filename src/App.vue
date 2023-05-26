@@ -1,10 +1,12 @@
 <script async setup>
 import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
 import TheNavBar from './components/TheNavBar.vue';
 import AppSpinner from './components/AppSpinner.vue';
 
 const store = useStore();
 store.dispatch('fetchAuthUser')
+const route = useRoute();
 
 
 </script>
@@ -15,7 +17,7 @@ store.dispatch('fetchAuthUser')
         <TheNavBar />
       </Suspense>
       <div class="container">
-        <router-view v-slot="{ Component }">
+        <router-view v-slot="{ Component }" :key="route.path">
           <Suspense>
             <template #default>
               <component :is="Component"></component>
