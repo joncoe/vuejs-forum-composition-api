@@ -15,7 +15,7 @@ defineProps({
 })
 
 const userById = (userId) => {
-  return store.getters.user(userId)
+  return store.getters['users/user'](userId)
 };
 
 const toggleEditMode = (id) => {
@@ -23,7 +23,7 @@ const toggleEditMode = (id) => {
 }
 
 const updatePost = ({text, id}) => {
-  store.dispatch('updatePost', {text, id});
+  store.dispatch('posts/updatePost', {text, id});
   editing.value = null;
 }
 

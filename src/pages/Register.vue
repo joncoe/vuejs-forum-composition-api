@@ -15,7 +15,12 @@ const form = reactive({
 })
 
 const register = async () => {
-  await store.dispatch('registerUserWithEmailAndPassword', {...form})
+  await store.dispatch('auth/registerUserWithEmailAndPassword', {...form})
+  router.push({name: 'Home'})
+}
+
+const registerWithGoogle = async () => {
+  await store.dispatch('auth/signInWithGoogle', {...form})
   router.push({name: 'Home'})
 }
 
@@ -57,7 +62,7 @@ const register = async () => {
         </div>
       </form>
       <div class="text-center push-top">
-        <button class="btn-red btn-xsmall">
+        <button @click="registerWithGoogle" class="btn-red btn-xsmall">
           <i class="fa fa-google fa-btn"></i>Sign up with Google
         </button>
       </div>

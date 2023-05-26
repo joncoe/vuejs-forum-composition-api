@@ -3,9 +3,9 @@ import {useStore} from 'vuex';
 import CategoryList from '@/components/CategoryList.vue';
 
 const store = useStore();
-const categories = await store.dispatch('fetchAllCategories')
+const categories = await store.dispatch('categories/fetchAllCategories')
 const forumIds = categories.map(category => category.forums).flat();
-await store.dispatch('fetchForums', { ids: forumIds })
+await store.dispatch('forums/fetchForums', { ids: forumIds })
 
 
 

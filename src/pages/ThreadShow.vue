@@ -11,30 +11,30 @@ const store = useStore();
 const props = defineProps(['id'])
 const route = useRoute();
 
-const thread = await store.dispatch('fetchThread', {id: props.id})
-const author = await store.dispatch('fetchUser', {id: thread.userId})
+const thread = await store.dispatch('threads/fetchThread', {id: props.id})
+const author = await store.dispatch('user/fetchUser', {id: thread.userId})
 
-const posts = await store.dispatch('fetchPosts', { ids: thread.posts });
+const posts = await store.dispatch('posts/fetchPosts', { ids: thread.posts });
 const users = posts.map(post => post.userId);
-store.dispatch('fetchUsers', { ids: users })
+await store.dispatch('users/fetchUsers', { ids: users })
 
 
 const currentThread = (id) => {
-  return store.getters.thread(id)
+  return store.getters['threads/thread'](id)
 }
 
 const threadPosts = computed(() => {
-  return store.state.posts;
+  return store.state.posts.items;
 })
 
-const authUser = computed(() => store.getters.authUser)
+const authUser = computed(() => store.getters['auth/authUser'])
 
 const addPost = ({text}) => {
   const post = {
     text,
     threadId: props.id,
   }
-  store.dispatch('createPost', post)
+  store.dispatch('posts/createPost', post)
 }
 
 </script>

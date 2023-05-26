@@ -5,7 +5,7 @@ import TheNavBar from './components/TheNavBar.vue';
 import AppSpinner from './components/AppSpinner.vue';
 
 const store = useStore();
-store.dispatch('fetchAuthUser')
+store.dispatch('auth/fetchAuthUser')
 const route = useRoute();
 
 

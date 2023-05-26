@@ -59,9 +59,9 @@ const routes = [
     component: ThreadShow,
     props: true,
     async beforeEnter (to, from, next) {
-      await store.dispatch('fetchThread', { id: to.params.id })
+      await store.dispatch('threads/fetchThread', { id: to.params.id })
       // check if thread exists
-      const threadExists = findById(store.state.threads, to.params.id)
+      const threadExists = findById(store.state.threads.items, to.params.id)
       // if exists continue
       if (threadExists) {
         return next()
@@ -115,7 +115,7 @@ const routes = [
     path: '/logout',
     name: 'SignOut',
     async beforeEnter () {
-      await store.dispatch('signOut')
+      await store.dispatch('auth/signOut')
       return { name: 'Home' }
     }
   },
@@ -138,13 +138,14 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from) => {
-  await store.dispatch('initAuthentication')
+  await store.dispatch('auth/initAuthentication')
   console.log(`navigating from ${from.path} to ${to.path}`)
   store.dispatch('unsubscribeAllSnapshots');
-  if (to.meta.requiresAuth && !store.state.authId) {
+  console.log(store.state.auth)
+  if (to.meta.requiresAuth && !store.state.auth.authId) {
     return { name: 'SignIn', query: {redirectTo: to.path}}
   }
-  if (to.meta.requiresGuest && store.state.authId) {
+  if (to.meta.requiresGuest && store.state.auth.authId) {
     return { name: 'Home' }
   }
 })

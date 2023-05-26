@@ -13,7 +13,7 @@ defineProps({
 })
 
 const getForumsForCategory = (category) => {
-  return store.state.forums.filter(forum => forum.categoryId === category.id)
+  return store.state.forums.items.filter(forum => forum.categoryId === category.id)
 }
 
 </script>

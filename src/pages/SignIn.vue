@@ -13,8 +13,7 @@ const form = reactive({
 
 const signIn = async () => {
   try {
-    await store.dispatch('signInWithEmailAndPassword', { ...form })
-    // router.push({name: 'Home'})
+    await store.dispatch('auth/signInWithEmailAndPassword', { ...form })
     successRedirect()
   } catch (error) {
     alert(error.message)
@@ -22,8 +21,7 @@ const signIn = async () => {
 }
 
 const signInWithGoogle = async () => {
-  await store.dispatch('signInWithGoogle')
-  // router.push({name: 'Home'})
+  await store.dispatch('auth/signInWithGoogle')
   successRedirect()
 }
 

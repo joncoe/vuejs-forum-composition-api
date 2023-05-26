@@ -16,12 +16,12 @@ let router = useRouter();
 
 const formIsDirty = ref(false)
 
-const thread = await store.dispatch('fetchThread', {id: props.id});
-const post = await store.dispatch('fetchPost', {id: thread.posts[0]}) || '';
+const thread = await store.dispatch('threads/fetchThread', {id: props.id});
+const post = await store.dispatch('posts/fetchPost', {id: thread.posts[0]}) || '';
 
 
 const save = async ({title, text}) => {
-  const thread = await store.dispatch('updateThread', {
+  const thread = await store.dispatch('threads/updateThread', {
     id: props.id,
     title,
     text

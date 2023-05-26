@@ -8,9 +8,9 @@ import UserProfileCard from '@/components/UserProfileCard';
 import UserProfileCardEditor from '@/components/UserProfileCardEditor';
 
 const store = useStore();
-const user = computed(() => store.getters.authUser);
+const user = computed(() => store.getters.auth.authUser);
 
-await store.dispatch('fetchAuthUsersPosts');
+await store.dispatch('auth/fetchAuthUsersPosts');
 
 defineProps({
   id: {

@@ -4,7 +4,7 @@ import { useStore } from 'vuex';
 
 const store = useStore();
 const userDropdownOpen = ref(false)
-const authUser = computed(() => store.getters.authUser)
+const authUser = computed(() => store.getters['auth/authUser'])
 
 const toggle = () => {
   userDropdownOpen.value = !userDropdownOpen.value;
@@ -44,7 +44,7 @@ const toggle = () => {
             <div class="triangle-drop"></div>
             <ul class="dropdown-menu">
               <li class="dropdown-menu-item"><router-link :to="{name: 'Profile'}">View profile</router-link></li>
-              <li class="dropdown-menu-item"><a @click.prevent="$store.dispatch('signOut')">Sign Out</a></li>
+              <li class="dropdown-menu-item"><a @click.prevent="$store.dispatch('auth/signOut')">Sign Out</a></li>
             </ul>
           </div>
         </li>

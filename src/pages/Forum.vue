@@ -12,9 +12,9 @@ const props = defineProps({
   }
 })
 
-const forum = await store.dispatch('fetchForum', {id: props.id});
-const threads = await store.dispatch('fetchThreads', { ids: forum.threads})
-await store.dispatch('fetchUsers', { ids: threads.map(thread => thread.userId)});
+const forum = await store.dispatch('forums/fetchForum', {id: props.id});
+const threads = await store.dispatch('threads/fetchThreads', { ids: forum.threads})
+await store.dispatch('users/fetchUsers', { ids: threads.map(thread => thread.userId)});
 
 
 </script>

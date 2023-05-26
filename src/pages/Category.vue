@@ -12,8 +12,8 @@ const props = defineProps({
   }
 })
 
-const category = await store.dispatch('fetchCategory', {id: props.id}) || {};
-const forums = await store.dispatch('fetchForums', {ids: category.forums})
+const category = await store.dispatch('categories/fetchCategory', {id: props.id}) || {};
+const forums = await store.dispatch('forums/fetchForums', {ids: category.forums})
 
 
 </script>
