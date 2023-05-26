@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue';
 import AppDate from '@/components/AppDate.vue'
+import AppInfiniteScroll from '@/components/AppInfiniteScroll'
 import router from '@/router';
 import vuexStore from '@/store';
 import firebase from 'firebase'
@@ -19,4 +20,5 @@ forumApp.use(FontAwesome)
 forumApp.use(ClickOutsideDirective)
 forumApp.use(PageScrollDirective)
 forumApp.component('AppDate', AppDate)
+forumApp.component('AppInfiniteScroll', AppInfiniteScroll)
 forumApp.mount('#app');

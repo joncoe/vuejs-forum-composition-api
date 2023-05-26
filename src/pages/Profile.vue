@@ -34,7 +34,11 @@ const lastPostFetched = computed(() => {
   return user.value.posts[user.value.posts.length - 1]
 })
 
-await store.dispatch('auth/fetchAuthUsersPosts', {startAfter: lastPostFetched.value})
+const fetchUserPosts = async () => {
+  return await store.dispatch('auth/fetchAuthUsersPosts', {startAfter: lastPostFetched.value})
+}
+
+await fetchUserPosts()
 
 </script>
 <template>
@@ -64,6 +68,10 @@ await store.dispatch('auth/fetchAuthUsersPosts', {startAfter: lastPostFetched.va
           <hr>
 
           <PostList :posts="user.posts" />
+          <AppInfiniteScroll
+            @load="fetchUserPosts"
+            :done="user.posts.length === user.postsCount"
+          />
 
         </div>
       </div>
