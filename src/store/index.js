@@ -18,7 +18,7 @@ export default createStore({
     auth
   },
   state: {
-    unsubscribes: []
+    unsubscribes: [],
   },
   getters,
   actions,
