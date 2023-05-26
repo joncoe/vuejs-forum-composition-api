@@ -1,14 +1,16 @@
-<script setup>
+<script async setup>
 import { computed, defineProps } from 'vue';
 import { onBeforeRouteUpdate } from 'vue-router';
 import { useStore } from 'vuex';
 
-// import PostList from '@/components/PostList';
-// import UserProfileCard from '@/components/UserProfileCard';
-// import UserProfileCardEditor from '@/components/UserProfileCardEditor';
+import PostList from '@/components/PostList';
+import UserProfileCard from '@/components/UserProfileCard';
+import UserProfileCardEditor from '@/components/UserProfileCardEditor';
 
 const store = useStore();
 const user = computed(() => store.getters.authUser);
+
+await store.dispatch('fetchAuthUsersPosts');
 
 defineProps({
   id: {
@@ -32,33 +34,37 @@ onBeforeRouteUpdate((to, from) => {
 
 </script>
 <template>
-  <div class="container">
-    <h1>Profile page</h1>
-    <!--
-    <div class="flex-grid">
-      <div class="col-3 push-top">
+  <div class="container col-full">
+    <div>
+      <h1>Profile page</h1>
+    </div>
+    <div class="col-full">
 
-        <UserProfileCardEditor v-if="edit" :user="user" />
-        <UserProfileCard v-else :user="user" />
+      <div class="flex-grid">
+        <div class="col-3 push-top">
 
-      </div>
+          <UserProfileCardEditor v-if="edit" :user="user" />
+          <UserProfileCard v-else :user="user" />
 
-      <div class="col-7 push-top">
-
-        <div class="profile-header">
-          <span class="text-lead">
-            {{user.username}}'s recent activity
-          </span>
-          <a href="#">See only started threads?</a>
         </div>
 
-        <hr>
+        <div class="col-7 push-top">
 
-        <PostList :posts="user.posts" />
+          <div class="profile-header">
+            <span class="text-lead">
+              {{user.username}}'s recent activity
+            </span>
+            <a href="#">See only started threads?</a>
+          </div>
 
+          <hr>
+
+          <PostList :posts="user.posts" />
+
+        </div>
       </div>
     </div>
-    -->
+
   </div>
 </template>
 
