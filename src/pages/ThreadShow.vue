@@ -1,6 +1,7 @@
 <script setup async>
 import { computed, defineProps } from "vue";
 import {useStore} from 'vuex';
+import {useRoute} from 'vue-router';
 
 import PostList from "@/components/PostList.vue";
 import PostEditor from "@/components/PostEditor.vue";
@@ -8,6 +9,7 @@ import AppDate from "@/components/AppDate.vue";
 
 const store = useStore();
 const props = defineProps(['id'])
+const route = useRoute();
 
 const thread = await store.dispatch('fetchThread', {id: props.id})
 const author = await store.dispatch('fetchUser', {id: thread.userId})
@@ -25,6 +27,8 @@ const threadPosts = computed(() => {
   return store.state.posts;
 })
 
+const authUser = computed(() => store.getters.authUser)
+
 const addPost = ({text}) => {
   const post = {
     text,
@@ -40,6 +44,7 @@ const addPost = ({text}) => {
   <div class="col-large push-top">
     <h1>{{ thread.title }}
       <router-link
+        v-if="thread.userId === authUser?.id"
         :to="{name: 'ThreadEdit', id: id}"
         class="btn-green btn-small"
       >Edit Thread</router-link>
@@ -56,7 +61,17 @@ const addPost = ({text}) => {
     </p>
 
     <PostList :posts="threadPosts" />
-    <PostEditor @save-post="addPost"/>
+    <PostEditor
+      v-if="authUser"
+      @save-post="addPost"/>
+      <div v-else class="text-center" style="margin-bottom: 50px;">
+        <router-link :to="{name: 'SignIn', query:{redirectTo: route.path}}">
+          Sign In
+        </router-link> or
+        <router-link :to="{name: 'Register',  query:{redirectTo: route.path}}">
+          Register
+        </router-link> to reply.
+    </div>
 
   </div>
 
