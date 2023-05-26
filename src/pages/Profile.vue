@@ -24,7 +24,7 @@ defineProps({
   }
 })
 
-onBeforeRouteUpdate((to, from) => {
+onBeforeRouteUpdate(() => {
   console.log('hi')
   if (!store.state.authId) {
     return { name: 'Home'}
