@@ -15,7 +15,7 @@ const formIsDirty = ref(false)
 const store = useStore();
 let router = useRouter();
 
-const forum = await store.dispatch('fetchForum', props.forumId)
+const forum = await store.dispatch('fetchForum', {id: props.forumId})
 
 const save = async ({title, text}) => {
   const thread = await store.dispatch('createThread', {

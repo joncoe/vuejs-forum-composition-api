@@ -1,9 +1,10 @@
 <script async setup>
 import {reactive} from 'vue';
 import { useStore } from 'vuex';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 const store = useStore();
 const router = useRouter();
+const route = useRoute();
 
 const form = reactive({
   email: '',
@@ -13,7 +14,8 @@ const form = reactive({
 const signIn = async () => {
   try {
     await store.dispatch('signInWithEmailAndPassword', { ...form })
-    router.push({name: 'Home'})
+    // router.push({name: 'Home'})
+    successRedirect()
   } catch (error) {
     alert(error.message)
   }
@@ -21,7 +23,13 @@ const signIn = async () => {
 
 const signInWithGoogle = async () => {
   await store.dispatch('signInWithGoogle')
-  router.push({name: 'Home'})
+  // router.push({name: 'Home'})
+  successRedirect()
+}
+
+const successRedirect = () => {
+  const redirectTo = route.query.redirectTo || {name: 'Home'};
+  router.push(redirectTo)
 }
 
 </script>

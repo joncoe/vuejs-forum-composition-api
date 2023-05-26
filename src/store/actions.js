@@ -162,7 +162,7 @@ export default {
       resource: "users",
       id: userId,
       handleUnsubscribe: (unsubscribe) => {
-        commit("handleUnsubscribe", unsubscribe);
+        commit("setAuthUserUnsubscribe", unsubscribe);
       },
     });
     commit('setAuthId', userId)
@@ -207,7 +207,7 @@ export default {
       if (handleUnsubscribe) {
         handleUnsubscribe(unsubscribe)
       } else {
-        commit('appendUnsubscribe', { unsubscribe })
+        commit('addSubscription', { unsubscribe })
       }
     })
   },
