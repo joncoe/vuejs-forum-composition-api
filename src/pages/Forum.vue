@@ -1,9 +1,12 @@
 <script async setup>
 import { defineProps, ref, reactive, computed, watch } from 'vue';
+import {useRoute, useRouter } from 'vue-router';
 import {useStore} from 'vuex';
 import ThreadList from '@/components/ThreadList.vue';
 
 const store = useStore();
+const route = useRoute();
+const router = useRouter();
 
 const props = defineProps({
   id: {
@@ -13,7 +16,7 @@ const props = defineProps({
 })
 
 const page = reactive({
-  pageNumber: 1
+  pageNumber: parseInt(route.query.page) || 1
 });
 const perPage = ref(2);
 
@@ -46,12 +49,7 @@ const updateHandler = (value) => {
 watch(
   page,
   async () => {
-    await store.dispatch('threads/fetchThreadsByPage', {
-      ids: forum.threads,
-      page: page.pageNumber,
-      perPage: perPage.value
-    });
-    await store.dispatch('users/fetchUsers', { ids: threads.value.map(thread => thread.userId) });
+    router.push({query: {page: page.pageNumber}})
   },
 )
 

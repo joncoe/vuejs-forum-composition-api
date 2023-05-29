@@ -17,7 +17,7 @@ const route = useRoute();
         <TheNavBar />
       </Suspense>
       <div class="container">
-        <router-view v-slot="{ Component }" :key="route.path">
+        <router-view v-slot="{ Component }" :key="`${route.path}${JSON.stringify(route.query)}`">
           <Suspense>
             <template #default>
               <component :is="Component"></component>
