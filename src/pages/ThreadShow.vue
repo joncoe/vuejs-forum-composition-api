@@ -6,10 +6,12 @@ import {useRoute} from 'vue-router';
 import PostList from "@/components/PostList.vue";
 import PostEditor from "@/components/PostEditor.vue";
 import AppDate from "@/components/AppDate.vue";
+import useNotifications from '@/composables/useNotifications'
 
 const store = useStore();
 const props = defineProps(['id'])
 const route = useRoute();
+const { addNotification } = useNotifications()
 
 const thread = await store.dispatch('threads/fetchThread', {id: props.id})
 const author = await store.dispatch('user/fetchUser', {id: thread.userId})

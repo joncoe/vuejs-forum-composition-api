@@ -1,8 +1,9 @@
 <script async setup>
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
-import TheNavBar from './components/TheNavBar.vue';
-import AppSpinner from './components/AppSpinner.vue';
+import TheNavBar from '@/components/TheNavBar.vue';
+import AppSpinner from '@/components/AppSpinner.vue';
+import AppNotifications from '@/components/AppNotifications.vue';
 
 const store = useStore();
 store.dispatch('auth/fetchAuthUser')
@@ -28,6 +29,7 @@ const route = useRoute();
           </Suspense>
         </router-view>
       </div>
+      <AppNotifications/>
     </div>
 </template>
 
