@@ -9,6 +9,7 @@ import firebaseConfig from '@/config/firebase'
 import FontAwesome from '@/plugins/FontAwesome'
 import ClickOutsideDirective from '@/plugins/ClickOutsideDirective'
 import PageScrollDirective from '@/plugins/PageScrollDirective'
+import Vue3Pagination from '@/plugins/Vue3Pagination'
 
 
 firebase.initializeApp(firebaseConfig)
@@ -19,6 +20,7 @@ forumApp.use(vuexStore)
 forumApp.use(FontAwesome)
 forumApp.use(ClickOutsideDirective)
 forumApp.use(PageScrollDirective)
+forumApp.use(Vue3Pagination)
 forumApp.component('AppDate', AppDate)
 forumApp.component('AppInfiniteScroll', AppInfiniteScroll)
 forumApp.mount('#app');

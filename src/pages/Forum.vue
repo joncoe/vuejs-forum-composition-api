@@ -1,5 +1,5 @@
 <script async setup>
-import { defineProps } from 'vue';
+import { defineProps, ref, reactive, computed, watch } from 'vue';
 import {useStore} from 'vuex';
 import ThreadList from '@/components/ThreadList.vue';
 
@@ -12,10 +12,48 @@ const props = defineProps({
   }
 })
 
-const forum = await store.dispatch('forums/fetchForum', {id: props.id});
-const threads = await store.dispatch('threads/fetchThreads', { ids: forum.threads})
-await store.dispatch('users/fetchUsers', { ids: threads.map(thread => thread.userId)});
+const page = reactive({
+  pageNumber: 1
+});
+const perPage = ref(2);
 
+const threads = computed(() => store.getters['threads/threads']);
+
+const forum = await store.dispatch('forums/fetchForum', {id: props.id});
+
+const loadedThreads = await store.dispatch('threads/fetchThreadsByPage', {
+  ids: forum.threads,
+  page: page.pageNumber,
+  perPage: perPage.value
+})
+
+await store.dispatch('users/fetchUsers', { ids: loadedThreads.map(thread => thread.userId)});
+
+
+const threadCount = computed(() => {
+  return forum.threads.length;
+})
+
+const totalPages = computed(() => {
+  if (!threadCount.value) return 0;
+  return Math.ceil(threadCount.value / perPage.value);
+})
+
+const updateHandler = (value) => {
+  page.pageNumber = value
+}
+
+watch(
+  page,
+  async () => {
+    await store.dispatch('threads/fetchThreadsByPage', {
+      ids: forum.threads,
+      page: page.pageNumber,
+      perPage: perPage.value
+    });
+    await store.dispatch('users/fetchUsers', { ids: threads.value.map(thread => thread.userId) });
+  },
+)
 
 </script>
 <template>
@@ -39,6 +77,12 @@ await store.dispatch('users/fetchUsers', { ids: threads.map(thread => thread.use
     <div class="col-full push-top">
 
       <ThreadList :threads="threads"/>
+      <v-pagination
+        v-model="page.pageNumber"
+        :pages="totalPages"
+        active-color="#57AD8B"
+        @update:modelValue="updateHandler"
+      />
 
     </div>
 

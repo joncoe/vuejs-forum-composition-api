@@ -1,5 +1,7 @@
 import { findById, docToResource, makeAppendChildToParentMutation } from '@/helpers'
 import firebase from 'firebase'
+import chunk from 'lodash/chunk'
+import store from '..'
 export default {
   namespaced: true,
   state: {
@@ -23,6 +25,9 @@ export default {
           }
         }
       }
+    },
+    threads: (state) => {
+      return state.items
     }
   },
   actions: {
@@ -74,10 +79,21 @@ export default {
       return docToResource(newThread)
     },
     fetchThread: ({ dispatch }, { id }) => dispatch('fetchItem', { emoji: '📄', resource: 'threads', id }, { root: true }),
-    fetchThreads: ({ dispatch }, { ids }) => dispatch('fetchItems', { resource: 'threads', ids, emoji: '📄' }, { root: true })
+    fetchThreads: ({ dispatch }, { ids }) => dispatch('fetchItems', { resource: 'threads', ids, emoji: '📄' }, { root: true }),
+    fetchThreadsByPage: ({ dispatch, commit }, { ids, page, perPage = 10 }) => {
+      console.log('fetchThreadsByPage')
+      commit('clearThreads')
+      const chunks = chunk(ids, perPage)
+      const limitedIds = chunks[page - 1]
+      store.dispatch('unsubscribeAllSnapshots');
+      return dispatch('fetchThreads', { ids: limitedIds })
+    }
   },
   mutations: {
     appendPostToThread: makeAppendChildToParentMutation({ parent: 'threads', child: 'posts' }),
-    appendContributorToThread: makeAppendChildToParentMutation({ parent: 'threads', child: 'contributors' })
+    appendContributorToThread: makeAppendChildToParentMutation({ parent: 'threads', child: 'contributors' }),
+    clearThreads: (state) => {
+      state.items = []
+    }
   }
 }

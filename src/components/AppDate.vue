@@ -14,7 +14,6 @@ const props = defineProps({
 })
 
 const normalizedTimestamp = computed(() => {
-  console.log(props.timestamp)
   return props.timestamp?.seconds || props.timestamp
 })
 
