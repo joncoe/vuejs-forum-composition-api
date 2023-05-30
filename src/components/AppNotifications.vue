@@ -6,14 +6,16 @@ const { notifications, removeNotification } = useNotifications()
 
 <template>
   <div class="notifications">
-    <div
-      class="notification"
-      v-for="notification in notifications"
-      :key="notification.id"
-    >
-      <span>{{ notification.message }}</span>
-      <button @click="removeNotification(notification.id)">✖️</button>
-    </div>
+    <transition-group name="notification">
+      <div
+        class="notification"
+        v-for="notification in notifications"
+        :key="notification.id"
+      >
+        <span>{{ notification.message }}</span>
+        <button @click="removeNotification(notification.id)">✖️</button>
+      </div>
+    </transition-group>
   </div>
 </template>
 
@@ -37,5 +39,17 @@ button:hover {
   transform: scale(1.5);
   transition: all .2s linear;
 
+}
+.notification-enter-active,
+.notification-leave-active {
+  transition: all .5s ease;
+}
+.notification-enter-from,
+.notification-leave-to {
+  opacity: 0;
+  transform: translateX(100%);
+}
+.notification-move {
+  transition: transform 0.8s ease;
 }
 </style>

@@ -35,7 +35,7 @@ const fetchPostsWithUsers = async (ids) => {
     onSnapshot: ({isLocal, previousItem}) => {
       console.log(isLocal, previousItem, asyncDataLoaded.value)
       if (isLocal || !asyncDataLoaded.value || (previousItem?.edited && !previousItem?.edited?.at)) return;
-      addNotification({ message: '📮 has been updated', timeout: 2500})
+      addNotification({ message: '📮 has been updated', timeout: 3500})
   } });
   users.items = posts.items.map(post => post.userId).concat(thread.loadedThread.userId);
   await store.dispatch('users/fetchUsers', { ids: users.items })
@@ -50,7 +50,7 @@ thread.loadedThread = await store.dispatch('threads/fetchThread', {
     if (hasNewPosts) {
       fetchPostsWithUsers(newPosts)
     } else {
-      addNotification({ message: '🧵 has been updated', timeout: 2500})
+      addNotification({ message: '🧵 has been updated', timeout: 3500})
     }
 } })
 
