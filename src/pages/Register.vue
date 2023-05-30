@@ -1,5 +1,5 @@
 <script setup>
-import {reactive } from 'vue';
+import {reactive, ref } from 'vue';
 import { useRouter } from  'vue-router';
 import { useStore } from 'vuex';
 
@@ -14,6 +14,8 @@ const form = reactive({
   avatar: ''
 })
 
+const avatarPreview = ref(null);
+
 const register = async () => {
   await store.dispatch('auth/registerUserWithEmailAndPassword', {...form})
   router.push({name: 'Home'})
@@ -22,6 +24,15 @@ const register = async () => {
 const registerWithGoogle = async () => {
   await store.dispatch('auth/signInWithGoogle', {...form})
   router.push({name: 'Home'})
+}
+
+const handleImageUpload = (e) => {
+  form.avatar = e.target.files[0]
+  const reader = new FileReader()
+  reader.onload = (event) => {
+    avatarPreview.value = event.target.result
+  }
+  reader.readAsDataURL(form.avatar)
 }
 
 
@@ -53,8 +64,19 @@ const registerWithGoogle = async () => {
         </div>
 
         <div class="form-group">
-          <label for="avatar">Avatar</label>
-          <input v-model="form.avatar" id="avatar" type="text" class="form-input" />
+          <label for="avatar">
+            Avatar
+            <div v-if="avatarPreview">
+              <img :src="avatarPreview" class="avatar-xlarge">
+            </div>
+          </label>
+          <input
+            v-show="!avatarPreview"
+            id="avatar" type="file"
+            class="form-input"
+            accept="image/*"
+            @change="handleImageUpload"
+          />
         </div>
 
         <div class="form-actions">
