@@ -90,11 +90,12 @@ export default {
         commit('setAuthUserUnsubscribe', null)
       }
     },
-    async uploadAvatar ({ state }, { authId, file }) {
+    async uploadAvatar ({ state }, { authId, file, filename }) {
       if (!file) return null
       authId = authId || state.authId
+      filename = filename || file.name
       try {
-        const storageBucket = firebase.storage().ref().child(`uploads/${authId}/images/${Date.now()}-${file.name}`)
+        const storageBucket = firebase.storage().ref().child(`uploads/${authId}/images/${Date.now()}-${filename}`)
         const snapshot = await storageBucket.put(file)
         const url = await snapshot.ref.getDownloadURL()
         return url

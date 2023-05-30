@@ -19,7 +19,8 @@ const router = useRouter();
 
 let activeUser = reactive({ ...props.user });
 
-const save = () => {
+const save = async () => {
+  await handleRandomAvatarUpload();
   store.dispatch('users/updateUser', { ...activeUser });
   router.push({ name: 'Profile' })
 }
@@ -39,6 +40,15 @@ const handleAvatarUpload = async (e) => {
 const randomAvatar = (e) => {
   console.log("avatar", e)
   activeUser.avatar = e;
+}
+
+const handleRandomAvatarUpload = async () => {
+  const randomAvatarGenerated = activeUser.avatar.startsWith('https://pixabay')
+  if (randomAvatarGenerated) {
+    const image = await fetch(activeUser.avatar)
+    const blob = await image.blob()
+    activeUser.avatar = await store.dispatch('auth/uploadAvatar', { file: blob, filename: 'random' })
+  }
 }
 
 </script>
