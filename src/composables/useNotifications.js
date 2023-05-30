@@ -1,7 +1,6 @@
 import { reactive } from 'vue'
 const notifications = reactive([])
 const addNotification = (notification) => {
-  console.log(notification)
   notifications.push({
     id: Math.random() + Date.now(),
     ...notification

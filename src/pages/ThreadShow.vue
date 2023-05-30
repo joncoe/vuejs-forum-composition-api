@@ -1,5 +1,5 @@
 <script setup async>
-import { computed, defineProps, reactive } from "vue";
+import { computed, defineProps, reactive, ref } from "vue";
 import {useStore} from 'vuex';
 import {useRoute} from 'vue-router';
 
@@ -26,8 +26,17 @@ const users = reactive({
   items: null
 })
 
+const asyncDataLoaded = ref(false)
+
+
 const fetchPostsWithUsers = async (ids) => {
-  posts.items = await store.dispatch('posts/fetchPosts', { ids: ids });
+  posts.items = await store.dispatch('posts/fetchPosts', {
+    ids,
+    onSnapshot: ({isLocal, previousItem}) => {
+      console.log(isLocal, previousItem, asyncDataLoaded.value)
+      if (isLocal || !asyncDataLoaded.value || (previousItem?.edited && !previousItem?.edited?.at)) return;
+      addNotification({ message: '📮 has been updated'})
+  } });
   users.items = posts.items.map(post => post.userId).concat(thread.loadedThread.userId);
   await store.dispatch('users/fetchUsers', { ids: users.items })
 }
@@ -35,14 +44,18 @@ const fetchPostsWithUsers = async (ids) => {
 thread.loadedThread = await store.dispatch('threads/fetchThread', {
   id: props.id,
   onSnapshot: ({isLocal, item, previousItem}) => {
-    if (isLocal || !thread.initialLoad) return;
-    const newPostIds = difference(item.posts, previousItem.posts)
-    fetchPostsWithUsers(newPostIds)
-    addNotification({ message: 'A new 🧵 has been added ➕'})
+    if (isLocal || !asyncDataLoaded.value) return;
+    const newPosts = difference(item.posts, previousItem.posts)
+    const hasNewPosts = newPosts.length > 0;
+    if (hasNewPosts) {
+      fetchPostsWithUsers(newPosts)
+    } else {
+      addNotification({ message: '🧵 has been updated'})
+    }
 } })
-thread.initialLoad = true;
 
-fetchPostsWithUsers(thread.loadedThread.posts)
+await fetchPostsWithUsers(thread.loadedThread.posts)
+asyncDataLoaded.value = true;
 
 const author = await store.dispatch('users/fetchUser', {id: thread.loadedThread.userId})
 
