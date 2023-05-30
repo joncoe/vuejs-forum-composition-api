@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps, reactive } from 'vue';
+import { defineProps, reactive, ref } from 'vue';
 import {useStore} from 'vuex';
 import { useRouter } from 'vue-router';
 
@@ -9,6 +9,8 @@ const props = defineProps({
     required: true
   }
 })
+
+const uploadingImage = ref(false)
 
 const store = useStore();
 const router = useRouter();
@@ -26,22 +28,29 @@ const cancel = () => {
 }
 
 const handleAvatarUpload = async (e) => {
+  uploadingImage.value = true;
   const file = e.target.files[0]
-  activeUser.avatar = await store.dispatch('auth/uploadAvatar', { file })
+  const uploadedImage = await store.dispatch('auth/uploadAvatar', { file });
+  activeUser.avatar = uploadedImage || activeUser.avatar;
+  uploadingImage.value = false;
 }
 
 </script>
 <template>
   <div class="profile-card">
 
-    <p class="text-center">
+    <p class="text-center  avatar-edit">
       <label for="avatar">
         <img
-          :src="user.avatar"
+          :src="activeUser.avatar"
           :alt="`${user.name} profile picture`"
           class="avatar-xlarge img-update"
         />
-        <input v-show="false" type="file" id="avatar" accept="image/*"  @change="handleAvatarUpload">
+        <div class="avatar-upload-overlay">
+          <AppSpinner v-if="uploadingImage" color="white" />
+          <fa v-else icon="camera" size="3x" :style="{color: 'white', opacity: '8'}" />
+        </div>
+        <input v-show="false" type="file" id="avatar" accept="image/*" @change="handleAvatarUpload">
       </label>
     </p>
     <form @submit.prevent="save">

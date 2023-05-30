@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue';
 import AppDate from '@/components/AppDate.vue'
 import AppInfiniteScroll from '@/components/AppInfiniteScroll'
+import AppSpinner from '@/components/AppSpinner'
 import router from '@/router';
 import vuexStore from '@/store';
 import firebase from 'firebase'
@@ -23,4 +24,5 @@ forumApp.use(PageScrollDirective)
 forumApp.use(Vue3Pagination)
 forumApp.component('AppDate', AppDate)
 forumApp.component('AppInfiniteScroll', AppInfiniteScroll)
+forumApp.component('AppSpinner', AppSpinner)
 forumApp.mount('#app');

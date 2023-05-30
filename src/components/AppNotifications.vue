@@ -9,6 +9,7 @@ const { notifications, removeNotification } = useNotifications()
     <transition-group name="notification">
       <div
         class="notification"
+        :class="`notification-type-${notification.type}`"
         v-for="notification in notifications"
         :key="notification.id"
       >
@@ -51,5 +52,8 @@ button:hover {
 }
 .notification-move {
   transition: transform 0.8s ease;
+}
+.notification.notification-type-error{
+  border-left: 5px solid rgb(146, 5, 5);
 }
 </style>
