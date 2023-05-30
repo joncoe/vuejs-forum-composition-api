@@ -5,10 +5,14 @@ const props = defineProps({
   src: { type: String }
 })
 
-const imgSrc = ref(props.src || '/images/user-placeholder.png')
-
 </script>
 
 <template>
-  <img :src="imgSrc" />
+  <img :src="props.src || '/images/user-placeholder.png'" />
 </template>
+
+<style scoped>
+  img{
+    object-fit: cover;
+  }
+</style>

@@ -1,7 +1,8 @@
 <script setup>
 import { defineProps, reactive, ref } from 'vue';
-import {useStore} from 'vuex';
+import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
+import UserProfileCardEditorRandomAvatar from './UserProfileCardEditorRandomAvatar'
 
 const props = defineProps({
   user: {
@@ -19,12 +20,12 @@ const router = useRouter();
 let activeUser = reactive({ ...props.user });
 
 const save = () => {
-  store.dispatch('users/updateUser', {...activeUser});
-  router.push({name: 'Profile'})
+  store.dispatch('users/updateUser', { ...activeUser });
+  router.push({ name: 'Profile' })
 }
 
 const cancel = () => {
-  router.push({name: 'Profile'})
+  router.push({ name: 'Profile' })
 }
 
 const handleAvatarUpload = async (e) => {
@@ -35,25 +36,27 @@ const handleAvatarUpload = async (e) => {
   uploadingImage.value = false;
 }
 
+const randomAvatar = (e) => {
+  console.log("avatar", e)
+  activeUser.avatar = e;
+}
+
 </script>
 <template>
   <div class="profile-card">
-
-    <p class="text-center  avatar-edit">
-      <label for="avatar">
-        <AppAvatarImg
-          :src="activeUser.avatar"
-          :alt="`${user.name} profile picture`"
-          class="avatar-xlarge img-update"
-        />
-        <div class="avatar-upload-overlay">
-          <AppSpinner v-if="uploadingImage" color="white" />
-          <fa v-else icon="camera" size="3x" :style="{color: 'white', opacity: '8'}" />
-        </div>
-        <input v-show="false" type="file" id="avatar" accept="image/*" @change="handleAvatarUpload">
-      </label>
-    </p>
     <form @submit.prevent="save">
+      <p class="text-center  avatar-edit">
+        <label for="avatar">
+          <AppAvatarImg :src="activeUser.avatar" :alt="`${user.name} profile picture`" class="avatar-xlarge img-update" />
+          <div class="avatar-upload-overlay">
+            <AppSpinner v-if="uploadingImage" color="white" />
+            <fa v-else icon="camera" size="3x" :style="{ color: 'white', opacity: '8' }" />
+          </div>
+          <input v-show="false" type="file" id="avatar" accept="image/*" @change="handleAvatarUpload">
+        </label>
+      </p>
+      <!-- UserProfileCardEditorRandomAvatar @hit="activeUser.avatar = $event" / -->
+      <UserProfileCardEditorRandomAvatar @hit="randomAvatar" />
 
       <div class="form-group">
         <input type="text" v-model="activeUser.username" placeholder="Username" class="form-input text-lead text-bold">
