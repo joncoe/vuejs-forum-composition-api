@@ -17,7 +17,7 @@ defineProps({
     <div class="profile-card">
 
       <p class="text-center">
-        <img :src="user.avatar" :alt="`${user.name} profile picture`" class="avatar-xlarge">
+        <AppAvatarImg :src="user.avatar" :alt="`${user.name} profile picture`" class="avatar-xlarge" />
       </p>
 
       <h1 class="title">{{ user.username }}</h1>

@@ -41,7 +41,7 @@ const handleAvatarUpload = async (e) => {
 
     <p class="text-center  avatar-edit">
       <label for="avatar">
-        <img
+        <AppAvatarImg
           :src="activeUser.avatar"
           :alt="`${user.name} profile picture`"
           class="avatar-xlarge img-update"

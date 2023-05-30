@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps,ref, computed } from 'vue';
+import { defineProps, ref } from 'vue';
 import {useStore} from 'vuex';
 import PostEditor from './PostEditor.vue';
 
@@ -38,7 +38,7 @@ const updatePost = ({text, id}) => {
         <a href="#" class="user-name">{{ userById(post.userId).name }}</a>
 
         <a href="#">
-          <img class="avatar-large" :src="userById(post.userId).avatar" alt="" />
+          <AppAvatarImg class="avatar-large" :src="userById(post.userId).avatar" />
         </a>
 
         <p class="desktop-only text-small">{{userById(post.userId).postsCount}} posts 🌗</p>
