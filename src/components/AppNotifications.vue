@@ -28,7 +28,7 @@ const { notifications, removeNotification } = useNotifications()
   display: flex;
   justify-content: space-between;
   width: 350px;
-  box-shadow: 2px 2px 2px 2px rbga(0, 0, 0.5);
+  filter: drop-shadow(3px 3px 8px rgba(0, 0, 0, 0.32));
   padding: 10px 20px;
   margin-bottom: 5px;
   border-left: 5px solid #263959;
