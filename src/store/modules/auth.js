@@ -16,10 +16,9 @@ export default {
       if (state.authObserverUnsubscribe) state.authObserverUnsubscribe()
       return new Promise((resolve) => {
         const unsubscribe = firebase.auth().onAuthStateChanged(async (user) => {
-          // console.log('👣 the user has changed')
-          this.dispatch('auth/unsubscribeAuthUserSnapshot')
+          dispatch('unsubscribeAuthUserSnapshot')
           if (user) {
-            await this.dispatch('auth/fetchAuthUser')
+            await dispatch('fetchAuthUser')
             resolve(user)
           } else {
             resolve(null)
@@ -30,11 +29,7 @@ export default {
     },
     async registerUserWithEmailAndPassword ({ dispatch }, { avatar = null, email, name, username, password }) {
       const result = await firebase.auth().createUserWithEmailAndPassword(email, password)
-      if (avatar) {
-        const storageBucket = firebase.storage().ref().child(`uploads/${result.user.uid}/images/${Date.now()}-${avatar.name}`)
-        const snapshot = await storageBucket.put(avatar)
-        avatar = await snapshot.ref.getDownloadURL()
-      }
+      avatar = await dispatch('uploadAvatar', { authId: result.user.uid, file: avatar })
       await dispatch('users/createUser', { id: result.user.uid, email, name, username, avatar }, { root: true })
     },
     signInWithEmailAndPassword (context, { email, password }) {
@@ -74,14 +69,10 @@ export default {
       commit('setAuthId', userId)
     },
     async fetchAuthUsersPosts ({ commit, state }, { startAfter }) {
-      console.log('startAfter', startAfter)
-      // limit(10)
-      // startAfter(doc)
-      // orderBy()
       let query = await firebase.firestore().collection('posts')
         .where('userId', '==', state.authId)
         .orderBy('publishedAt', 'desc')
-        .limit(2)
+        .limit(5)
       if (startAfter) {
         const doc = await firebase.firestore().collection('posts').doc(startAfter.id).get()
         query = query.startAfter(doc)
@@ -96,7 +87,15 @@ export default {
         state.authUserUnsubscribe()
         commit('setAuthUserUnsubscribe', null)
       }
-    }
+    },
+    async uploadAvatar ({ state }, { authId, file }) {
+      if (!file) return null
+      authId = authId || state.authId
+      const storageBucket = firebase.storage().ref().child(`uploads/${authId}/images/${Date.now()}-${file.name}`)
+      const snapshot = await storageBucket.put(file)
+      const url = await snapshot.ref.getDownloadURL()
+      return url
+    },
   },
   mutations: {
     setAuthId (state, id) {

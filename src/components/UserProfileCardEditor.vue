@@ -25,12 +25,24 @@ const cancel = () => {
   router.push({name: 'Profile'})
 }
 
+const handleAvatarUpload = async (e) => {
+  const file = e.target.files[0]
+  activeUser.avatar = await store.dispatch('auth/uploadAvatar', { file })
+}
+
 </script>
 <template>
   <div class="profile-card">
 
     <p class="text-center">
-      <img :src="user.avatar" :alt="`${user.name} profile picture`" class="avatar-xlarge img-update">
+      <label for="avatar">
+        <img
+          :src="user.avatar"
+          :alt="`${user.name} profile picture`"
+          class="avatar-xlarge img-update"
+        />
+        <input v-show="false" type="file" id="avatar" accept="image/*"  @change="handleAvatarUpload">
+      </label>
     </p>
     <form @submit.prevent="save">
 
@@ -71,7 +83,7 @@ const cancel = () => {
       </div>
 
       <div class="btn-group space-between">
-        <button class="btn-ghost" @click="cancel">Cancel</button>
+        <button class="btn-ghost" @click.prevent="cancel">Cancel</button>
         <button type="submit" class="btn-blue">Save</button>
       </div>
     </form>

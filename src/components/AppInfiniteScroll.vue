@@ -1,5 +1,5 @@
 <script setup>
-import {defineProps, onMounted, onUnmounted, reactive, ref, watch, defineEmits} from 'vue';
+import {defineProps, onMounted, onBeforeUnmount, reactive, ref, watch, defineEmits} from 'vue';
 
 const props = defineProps({
   done: {
@@ -29,7 +29,7 @@ onMounted(() => {
   scrollObserver.theEye.observe(observerElement.value)
 })
 
-onUnmounted(() => {
+onBeforeUnmount(() => {
   scrollObserver.theEye.unobserve(observerElement.value)
 })
 
