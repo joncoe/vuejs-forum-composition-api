@@ -137,7 +137,7 @@ const router = createRouter({
   }
 })
 
-router.beforeEach(async (to, from) => {
+router.beforeEach(async (to) => {
   await store.dispatch('auth/initAuthentication')
   // console.log(`navigating from ${from.path} to ${to.path}`)
   store.dispatch('unsubscribeAllSnapshots');

@@ -17,7 +17,7 @@ const scrollObserver = reactive({
 
 
 onMounted(() => {
-  scrollObserver.theEye = new IntersectionObserver((entries, observe) => {
+  scrollObserver.theEye = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) emit('load')
     })

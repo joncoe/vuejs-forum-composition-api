@@ -55,7 +55,7 @@ export default {
 
       commit('setAuthId', null)
     },
-    fetchAuthUser: async ({ dispatch, state, commit }) => {
+    fetchAuthUser: async ({ dispatch, commit }) => {
       const userId = firebase.auth().currentUser?.uid
       if (!userId) return
       await dispatch('fetchItem', {

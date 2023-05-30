@@ -1,5 +1,5 @@
 <script setup>
-import {defineProps, ref} from 'vue';
+import {defineProps} from 'vue';
 
 const props = defineProps({
   src: { type: String }
