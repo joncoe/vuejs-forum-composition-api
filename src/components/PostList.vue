@@ -41,8 +41,11 @@ const updatePost = ({text, id}) => {
           <AppAvatarImg class="avatar-large" :src="userById(post.userId).avatar" />
         </a>
 
-        <p class="desktop-only text-small">{{userById(post.userId).postsCount}} posts 🌗</p>
-        <p class="desktop-only text-small">{{userById(post.userId).threadCount}} threads 🪡</p>
+        <p class="desktop-only text-small">{{userById(post.userId).postsCount}}
+          {{userById(post.userId).postsCount === 1 ? 'post' : 'posts'}} 🌗</p>
+        <p class="desktop-only text-small">{{userById(post.userId).threads.length}}
+          {{userById(post.userId).threads.length === 1 ? 'thread' : 'threads'}} 🪡
+        </p>
       </div>
 
       <div class="post-content">
