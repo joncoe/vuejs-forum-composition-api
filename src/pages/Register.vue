@@ -3,8 +3,7 @@ import {reactive, ref } from 'vue';
 import { useRouter } from  'vue-router';
 import { useStore } from 'vuex';
 
-import { Form, Field } from 'vee-validate';
-// import {VeeField as Field} from 'vee-validate';
+import { Form, Field, ErrorMessage } from 'vee-validate';
 
 const store = useStore();
 const router = useRouter();
@@ -38,6 +37,10 @@ const handleImageUpload = (e) => {
   reader.readAsDataURL(form.avatar)
 }
 
+const required = (value) => {
+  if (value && value.trim()) return true
+  return 'This is required'
+}
 
 </script>
 <template>
@@ -45,28 +48,20 @@ const handleImageUpload = (e) => {
     <div class="col-2">
       <Form
         @submit="register"
-        :validation-schema="{
-          name: (value) => {
-            if(value && value.trim()) return true
-            return 'This is required'
-          },
-          username: (value)=>{
-            if(value && value.trim()) return true
-            return 'This is required'
-          }
-        }"
         class="card card-form"
       >
         <h1 class="text-center">Register</h1>
 
         <div class="form-group">
           <label for="name">Full Name</label>
-          <Field v-model="form.name" name="name" id="name" type="text" class="form-input" />
+          <Field v-model="form.name" name="name" id="name" type="text" class="form-input" :rules="required"/>
+          <ErrorMessage name="name" class="form-error"/>
         </div>
 
         <div class="form-group">
           <label for="username">Username</label>
-          <Field v-model="form.username" name="username" id="username" type="text" class="form-input" />
+          <Field v-model="form.username" name="username" id="username" type="text" class="form-input" :rules="required"/>
+          <ErrorMessage name="username" class="form-error"/>
         </div>
 
         <div class="form-group">
