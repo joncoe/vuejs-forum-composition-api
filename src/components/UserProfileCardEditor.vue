@@ -3,6 +3,8 @@ import { defineProps, reactive, ref } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import UserProfileCardEditorRandomAvatar from './UserProfileCardEditorRandomAvatar'
+import UserProfileCardEditorReauthenticate from './UserProfileCardEditorReauthenticate.vue'
+import useNotifications from '@/composables/useNotifications'
 
 const props = defineProps({
   user: {
@@ -13,6 +15,7 @@ const props = defineProps({
 
 const uploadingImage = ref(false)
 const locationOptions = ref([])
+const needsReAuth = ref(false)
 
 const store = useStore();
 const router = useRouter();
@@ -22,9 +25,15 @@ let activeUser = reactive({ ...props.user });
 
 const save = async () => {
   await handleRandomAvatarUpload();
-  store.dispatch('users/updateUser', { ...activeUser, threads:  activeUser.threadIds});
-  router.push({ name: 'Profile' })
+  const emailChanged = activeUser.email !== props.user.email
+  if (emailChanged) {
+    needsReAuth.value = true
+  } else {
+    saveUserData()
+  }
 }
+
+const { addNotification } = useNotifications()
 
 const cancel = () => {
   router.push({ name: 'Profile' })
@@ -43,6 +52,7 @@ const randomAvatar = (e) => {
 }
 
 const handleRandomAvatarUpload = async () => {
+  if (!activeUser.avatar) return
   const randomAvatarGenerated = activeUser.avatar.startsWith('https://pixabay')
   if (randomAvatarGenerated) {
     const image = await fetch(activeUser.avatar)
@@ -55,6 +65,24 @@ const loadLocationOptions = async () => {
   if (locationOptions.value.length) return
   const res = await fetch('https://restcountries.com/v3/all')
   locationOptions.value = await res.json()
+}
+
+const onReauthenticated = async () => {
+  await store.dispatch('auth/updateEmail', { email: activeUser.email })
+  console.log('on reauthenticated successful')
+  saveUserData()
+}
+
+const onReauthenticatedFailed = async () => {
+  addNotification({ message: 'Error updating user', type: 'error', timeout: 3000 })
+  router.push({ name: 'Profile' })
+}
+
+const saveUserData = async () => {
+  await store.dispatch('users/updateUser', { ...activeUser, threads: activeUser.threadIds })
+  await store.dispatch('auth/updateEmail', { email: activeUser.email })
+  router.push({ name: 'Profile' })
+  addNotification({ message: 'User successfully updated', timeout: 3000 })
 }
 
 </script>
@@ -97,6 +125,11 @@ const loadLocationOptions = async () => {
         <button type="submit" class="btn-blue">Save</button>
       </div>
     </VeeForm>
+    <UserProfileCardEditorReauthenticate
+      v-model="needsReAuth"
+      @success="onReauthenticated"
+      @fail="onReauthenticatedFailed"
+    />
   </div>
 </template>
 
