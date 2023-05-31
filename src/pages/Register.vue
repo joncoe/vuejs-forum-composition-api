@@ -3,8 +3,6 @@ import {reactive, ref } from 'vue';
 import { useRouter } from  'vue-router';
 import { useStore } from 'vuex';
 
-import { Form, Field, ErrorMessage } from 'vee-validate';
-
 const store = useStore();
 const router = useRouter();
 
@@ -37,10 +35,6 @@ const handleImageUpload = (e) => {
   reader.readAsDataURL(form.avatar)
 }
 
-const required = (value) => {
-  if (value && value.trim()) return true
-  return 'This is required'
-}
 
 </script>
 <template>
@@ -54,13 +48,13 @@ const required = (value) => {
 
         <div class="form-group">
           <label for="name">Full Name</label>
-          <Field v-model="form.name" name="name" id="name" type="text" class="form-input" :rules="required"/>
+          <Field v-model="form.name" name="name" id="name" type="text" class="form-input" rules="required"/>
           <ErrorMessage name="name" class="form-error"/>
         </div>
 
         <div class="form-group">
           <label for="username">Username</label>
-          <Field v-model="form.username" name="username" id="username" type="text" class="form-input" :rules="required"/>
+          <Field v-model="form.username" name="username" id="username" type="text" class="form-input" rules="required"/>
           <ErrorMessage name="username" class="form-error"/>
         </div>
 
