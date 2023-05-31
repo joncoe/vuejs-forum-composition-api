@@ -1,5 +1,5 @@
 <script setup>
-import {defineProps, useAttrs} from 'vue';
+import {defineProps, defineOptions, useAttrs} from 'vue';
 const attrs = useAttrs()
 
 defineProps({
@@ -7,6 +7,11 @@ defineProps({
   label: { type: String, required: true },
   modelValue: { type: String, default: '' }
 })
+
+defineOptions({
+  inheritAttrs: false,
+})
+
 
 </script>
 

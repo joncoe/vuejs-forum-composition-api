@@ -12,6 +12,7 @@ const props = defineProps({
 })
 
 const uploadingImage = ref(false)
+const locationOptions = ref([])
 
 const store = useStore();
 const router = useRouter();
@@ -51,6 +52,12 @@ const handleRandomAvatarUpload = async () => {
   }
 }
 
+const loadLocationOptions = async () => {
+  if (locationOptions.value.length) return
+  const res = await fetch('https://restcountries.com/v3/all')
+  locationOptions.value = await res.json()
+}
+
 </script>
 <template>
   <div class="profile-card">
@@ -81,7 +88,10 @@ const handleRandomAvatarUpload = async () => {
 
       <AppFormField label="Website" name="website" v-model="activeUser.website" rules="url" />
       <AppFormField label="Email" name="email" v-model="activeUser.email" :rules="`required|email|unique:users,email,${user.email}`"/>
-      <AppFormField label="Location" name="location" v-model="activeUser.location" />
+      <AppFormField label="Location" name="location" v-model="activeUser.location" list="locations" @mouseenter="loadLocationOptions"/>
+      <datalist id="locations">
+        <option v-for="location in locationOptions" :value="location.name.common" :key="location.name.common" />
+      </datalist>
 
       <div class="btn-group space-between">
         <button class="btn-ghost" @click.prevent="cancel">Cancel</button>
