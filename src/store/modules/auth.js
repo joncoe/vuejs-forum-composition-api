@@ -65,7 +65,6 @@ export default {
     },
     async signOut ({ commit }) {
       await firebase.auth().signOut()
-
       commit('setAuthId', null)
     },
     fetchAuthUser: async ({ dispatch, commit }) => {

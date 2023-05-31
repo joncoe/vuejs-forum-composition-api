@@ -1,14 +1,21 @@
 <script setup>
 import {computed, ref} from 'vue';
+import {useRouter} from 'vue-router';
 import { useStore } from 'vuex';
 
 const store = useStore();
 const userDropdownOpen = ref(false)
 const mobileNavMenu = ref(false)
+const router = useRouter();
 const authUser = computed(() => store.getters['auth/authUser'])
 
 const toggle = () => {
   userDropdownOpen.value = !userDropdownOpen.value;
+}
+
+const signOutUser = () => {
+  router.push({name: 'Home'})
+  store.dispatch('auth/signOut');
 }
 
 </script>
@@ -48,15 +55,14 @@ const toggle = () => {
             <div class="triangle-drop"></div>
             <ul class="dropdown-menu">
               <li class="dropdown-menu-item"><router-link :to="{name: 'Profile'}">View profile</router-link></li>
-              <li class="dropdown-menu-item"><a @click.prevent="$store.dispatch('auth/signOut')">Sign Out</a></li>
+              <li class="dropdown-menu-item"><a @click.prevent="signOutUser">Sign Out</a></li>
             </ul>
           </div>
         </li>
         <li v-if="!authUser" class="navbar-item"><router-link :to="{name: 'SignIn'}">Sign In</router-link></li>
         <li v-if="!authUser" class="navbar-item"><router-link :to="{name: 'Register'}">Register</router-link></li>
         <li v-if="authUser" class="navbar-mobile-item"><a
-          @click.prevent="$store.dispatch('auth/signOut'),
-          $router.push({name: 'Home'})">
+          @click.prevent="signOutUser">
         Sign Out</a></li>
       </ul>
     </nav>

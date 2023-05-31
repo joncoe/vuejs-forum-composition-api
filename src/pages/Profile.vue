@@ -23,11 +23,12 @@ defineProps({
   }
 })
 
-onBeforeRouteUpdate(() => {
-  if (!store.getters['auth/authUser']) {
-    return { name: 'Home'}
-  }
-})
+// onBeforeRouteUpdate(() => {
+//   console.log('Profile page onBeforeRouteUpdate')
+//   if (!store.getters['auth/authUser']) {
+//     return { name: 'Home'}
+//   }
+// })
 
 const lastPostFetched = computed(() => {
   if (user.value.posts.length === 0) return null
@@ -42,7 +43,7 @@ await fetchUserPosts()
 
 </script>
 <template>
-  <div class="container col-full">
+  <div v-if="user" class="container col-full">
     <div>
       <h1>Profile page</h1>
     </div>
