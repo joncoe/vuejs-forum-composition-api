@@ -54,7 +54,7 @@ const handleImageUpload = (e) => {
 
         <div class="form-group">
           <label for="username">Username</label>
-          <VeeField v-model="form.username" name="username" id="username" type="text" class="form-input" rules="required"/>
+          <VeeField v-model="form.username" name="username" id="username" type="text" class="form-input" rules="required|unique:users,username"/>
           <VeeErrorMessage name="username" class="form-error"/>
         </div>
 
@@ -66,7 +66,7 @@ const handleImageUpload = (e) => {
             id="email"
             type="email"
             class="form-input"
-            rules="required|email"
+            rules="required|email|unique:users,email"
           />
           <VeeErrorMessage name="email" class="form-error" />
         </div>
