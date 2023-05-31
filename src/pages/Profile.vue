@@ -1,6 +1,5 @@
 <script async setup>
 import { computed, defineProps } from 'vue';
-import { onBeforeRouteUpdate } from 'vue-router';
 import { useStore } from 'vuex';
 
 import PostList from '@/components/PostList';
@@ -22,13 +21,6 @@ defineProps({
     required: true
   }
 })
-
-// onBeforeRouteUpdate(() => {
-//   console.log('Profile page onBeforeRouteUpdate')
-//   if (!store.getters['auth/authUser']) {
-//     return { name: 'Home'}
-//   }
-// })
 
 const lastPostFetched = computed(() => {
   if (user.value.posts.length === 0) return null
