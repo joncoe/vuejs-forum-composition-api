@@ -16,6 +16,7 @@ export default (app) => {
       ({ collection, field } = args)
     }
     const querySnapshot = await firebase.firestore().collection(collection).where(field, '==', value).get()
+    console.log(querySnapshot)
     return querySnapshot.empty
   })
 

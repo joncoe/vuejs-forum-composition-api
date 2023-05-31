@@ -4,6 +4,7 @@ import AppDate from '@/components/AppDate.vue'
 import AppInfiniteScroll from '@/components/AppInfiniteScroll'
 import AppSpinner from '@/components/AppSpinner'
 import AppAvatarImg from '@/components/AppAvatarImg'
+import AppFormField from '@/components/AppFormField'
 import router from '@/router';
 import vuexStore from '@/store';
 import firebase from 'firebase'
@@ -29,4 +30,5 @@ forumApp.component('AppDate', AppDate)
 forumApp.component('AppInfiniteScroll', AppInfiniteScroll)
 forumApp.component('AppSpinner', AppSpinner)
 forumApp.component('AppAvatarImg', AppAvatarImg)
+forumApp.component('AppFormField', AppFormField)
 forumApp.mount('#app');
