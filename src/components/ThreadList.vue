@@ -45,7 +45,7 @@ const userById = (userId) => {
 
             <div class="activity">
               <p class="replies-count">
-                {{ thread.repliesCount }} replies 📬
+                {{ thread.posts.length - 1 || 0 }} replies 📬
               </p>
 
               <AppAvatarImg class="avatar-medium" :src="userById(thread.userId).avatar" />
