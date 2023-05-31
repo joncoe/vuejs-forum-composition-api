@@ -62,7 +62,6 @@ await fetchUserPosts()
             <span class="text-lead">
               {{user.username}}'s recent activity
             </span>
-            <a href="#">See only started threads?</a>
           </div>
 
           <hr>
