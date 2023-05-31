@@ -19,7 +19,6 @@ export default (app) => {
     if (value === excluding) return true
 
     const querySnapshot = await firebase.firestore().collection(collection).where(field, '==', value).get()
-    console.log(querySnapshot)
     return querySnapshot.empty
   })
 

@@ -33,7 +33,6 @@ const fetchPostsWithUsers = async (ids) => {
   posts.items = await store.dispatch('posts/fetchPosts', {
     ids,
     onSnapshot: ({isLocal, previousItem}) => {
-      console.log(isLocal, previousItem, asyncDataLoaded.value)
       if (isLocal || !asyncDataLoaded.value || (previousItem?.edited && !previousItem?.edited?.at)) return;
       addNotification({ message: '📮 has been updated', timeout: 3500})
   } });

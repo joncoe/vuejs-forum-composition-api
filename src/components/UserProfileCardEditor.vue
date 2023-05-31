@@ -39,7 +39,6 @@ const handleAvatarUpload = async (e) => {
 }
 
 const randomAvatar = (e) => {
-  console.log("avatar", e)
   activeUser.avatar = e;
 }
 
