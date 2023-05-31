@@ -3,6 +3,9 @@ import {reactive, ref } from 'vue';
 import { useRouter } from  'vue-router';
 import { useStore } from 'vuex';
 
+import { Form, Field } from 'vee-validate';
+// import {VeeField as Field} from 'vee-validate';
+
 const store = useStore();
 const router = useRouter();
 
@@ -40,27 +43,40 @@ const handleImageUpload = (e) => {
 <template>
   <div class="flex-grid justify-center">
     <div class="col-2">
-      <form @submit.prevent="register" class="card card-form">
+      <Form
+        @submit="register"
+        :validation-schema="{
+          name: (value) => {
+            if(value && value.trim()) return true
+            return 'This is required'
+          },
+          username: (value)=>{
+            if(value && value.trim()) return true
+            return 'This is required'
+          }
+        }"
+        class="card card-form"
+      >
         <h1 class="text-center">Register</h1>
 
         <div class="form-group">
           <label for="name">Full Name</label>
-          <input v-model="form.name" id="name" type="text" class="form-input" />
+          <Field v-model="form.name" name="name" id="name" type="text" class="form-input" />
         </div>
 
         <div class="form-group">
           <label for="username">Username</label>
-          <input v-model="form.username" id="username" type="text" class="form-input" />
+          <Field v-model="form.username" name="username" id="username" type="text" class="form-input" />
         </div>
 
         <div class="form-group">
           <label for="email">Email</label>
-          <input v-model="form.email" id="email" type="email" class="form-input" />
+          <Field v-model="form.email" name="email" id="email" type="email" class="form-input" />
         </div>
 
         <div class="form-group">
           <label for="password">Password</label>
-          <input v-model="form.password" id="password" type="password" class="form-input" />
+          <Field v-model="form.password" name="password" id="password" type="password" class="form-input" />
         </div>
 
         <div class="form-group">
@@ -70,9 +86,11 @@ const handleImageUpload = (e) => {
               <img :src="avatarPreview" class="avatar-xlarge">
             </div>
           </label>
-          <input
+          <Field
             v-show="!avatarPreview"
-            id="avatar" type="file"
+            id="avatar"
+            name="avatar"
+            type="file"
             class="form-input"
             accept="image/*"
             @change="handleImageUpload"
@@ -82,7 +100,7 @@ const handleImageUpload = (e) => {
         <div class="form-actions">
           <button type="submit" class="btn-blue btn-block">Register</button>
         </div>
-      </form>
+      </Form>
       <div class="text-center push-top">
         <button @click="registerWithGoogle" class="btn-red btn-xsmall">
           <i class="fa fa-google fa-btn"></i>Sign up with Google
