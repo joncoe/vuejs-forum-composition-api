@@ -95,8 +95,10 @@ const addPost = ({text}) => {
       <span
         style="float:right; margin-top: 2px;"
         class="hide-mobile text-faded text-small">
-          {{currentThread(thread.loadedThread.id).repliesCount}} replies by
-          {{currentThread(thread.loadedThread.id).contributorsCount}} contributors
+          {{currentThread(thread.loadedThread.id).repliesCount}}
+          {{thread.repliesCount === 1 ? 'reply' : 'replies'}} by
+          {{currentThread(thread.loadedThread.id).contributorsCount}}
+          {{thread.contributorsCount === 1 ? 'contributor' : 'contributors'}}
       </span>
     </p>
 

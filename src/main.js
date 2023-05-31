@@ -7,7 +7,7 @@ import AppAvatarImg from '@/components/AppAvatarImg'
 import AppFormField from '@/components/AppFormField'
 import router from '@/router';
 import vuexStore from '@/store';
-import firebase from 'firebase'
+import firebase from '@/helpers/firebase'
 import firebaseConfig from '@/config/firebase'
 import FontAwesome from '@/plugins/FontAwesome'
 import ClickOutsideDirective from '@/plugins/ClickOutsideDirective'
