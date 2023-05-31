@@ -139,7 +139,6 @@ const router = createRouter({
 
 router.beforeEach(async (to) => {
   await store.dispatch('auth/initAuthentication')
-  // console.log(`navigating from ${from.path} to ${to.path}`)
   store.dispatch('unsubscribeAllSnapshots');
   if (to.meta.requiresAuth && !store.state.auth.authId) {
     return { name: 'SignIn', query: {redirectTo: to.path}}
@@ -148,4 +147,9 @@ router.beforeEach(async (to) => {
     return { name: 'Home' }
   }
 })
+
+router.afterEach(() => {
+  store.dispatch('clearItems', { modules: ['categories', 'forums', 'posts', 'threads'] })
+})
+
 export default router;

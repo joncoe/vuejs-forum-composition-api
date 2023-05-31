@@ -34,7 +34,7 @@ await store.dispatch('users/fetchUsers', { ids: loadedThreads.map(thread => thre
 
 
 const threadCount = computed(() => {
-  return forum.threads.length;
+  return forum.threads?.length || 0;
 })
 
 const totalPages = computed(() => {
@@ -42,9 +42,6 @@ const totalPages = computed(() => {
   return Math.ceil(threadCount.value / perPage.value);
 })
 
-const updateHandler = (value) => {
-  page.pageNumber = value
-}
 
 watch(
   page,
@@ -79,7 +76,6 @@ watch(
         v-model="page.pageNumber"
         :pages="totalPages"
         active-color="#57AD8B"
-        @update:modelValue="updateHandler"
       />
 
     </div>

@@ -82,7 +82,6 @@ export default {
     fetchThread: makeFetchItemAction({ emoji: '🪡', resource: 'threads' }),
     fetchThreads: makeFetchItemsAction({ emoji: '🧵', resource: 'threads' }),
     fetchThreadsByPage: ({ dispatch, commit }, { ids, page, perPage = 10 }) => {
-      console.log('fetchThreadsByPage')
       commit('clearThreads')
       const chunks = chunk(ids, perPage)
       const limitedIds = chunks[page - 1]
