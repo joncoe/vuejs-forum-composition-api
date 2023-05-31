@@ -39,13 +39,13 @@ const successRedirect = () => {
 
         <div class="form-group">
           <label for="email">Email</label>
-          <Field name="email" v-model="form.email" id="email" type="text" class="form-input" rules="required" />
-          <ErrorMessage name="email" class="form-error"/>
+          <VeeField name="email" v-model="form.email" id="email" type="text" class="form-input" rules="required" />
+          <VeeErrorMessage name="email" class="form-error"/>
         </div>
         <div class="form-group">
           <label for="password">Password</label>
-          <Field name="password" v-model="form.password" id="password" type="password" class="form-input" rules="required" />
-          <ErrorMessage name="password" class="form-error"/>
+          <VeeField name="password" v-model="form.password" id="password" type="password" class="form-input" rules="required" />
+          <VeeErrorMessage name="password" class="form-error"/>
         </div>
 
         <div class="push-top">

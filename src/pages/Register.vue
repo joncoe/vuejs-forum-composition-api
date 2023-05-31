@@ -40,7 +40,7 @@ const handleImageUpload = (e) => {
 <template>
   <div class="flex-grid justify-center">
     <div class="col-2">
-      <Form
+      <VeeForm
         @submit="register"
         class="card card-form"
       >
@@ -48,24 +48,24 @@ const handleImageUpload = (e) => {
 
         <div class="form-group">
           <label for="name">Full Name</label>
-          <Field v-model="form.name" name="name" id="name" type="text" class="form-input" rules="required"/>
-          <ErrorMessage name="name" class="form-error"/>
+          <VeeField v-model="form.name" name="name" id="name" type="text" class="form-input" rules="required"/>
+          <VeeErrorMessage name="name" class="form-error"/>
         </div>
 
         <div class="form-group">
           <label for="username">Username</label>
-          <Field v-model="form.username" name="username" id="username" type="text" class="form-input" rules="required"/>
-          <ErrorMessage name="username" class="form-error"/>
+          <VeeField v-model="form.username" name="username" id="username" type="text" class="form-input" rules="required"/>
+          <VeeErrorMessage name="username" class="form-error"/>
         </div>
 
         <div class="form-group">
           <label for="email">Email</label>
-          <Field v-model="form.email" name="email" id="email" type="email" class="form-input" />
+          <VeeField v-model="form.email" name="email" id="email" type="email" class="form-input" />
         </div>
 
         <div class="form-group">
           <label for="password">Password</label>
-          <Field v-model="form.password" name="password" id="password" type="password" class="form-input" />
+          <VeeField v-model="form.password" name="password" id="password" type="password" class="form-input" />
         </div>
 
         <div class="form-group">
@@ -75,7 +75,7 @@ const handleImageUpload = (e) => {
               <img :src="avatarPreview" class="avatar-xlarge">
             </div>
           </label>
-          <Field
+          <VeeField
             v-show="!avatarPreview"
             id="avatar"
             name="avatar"
@@ -89,7 +89,7 @@ const handleImageUpload = (e) => {
         <div class="form-actions">
           <button type="submit" class="btn-blue btn-block">Register</button>
         </div>
-      </Form>
+      </VeeForm>
       <div class="text-center push-top">
         <button @click="registerWithGoogle" class="btn-red btn-xsmall">
           <i class="fa fa-google fa-btn"></i>Sign up with Google
