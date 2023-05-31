@@ -2,6 +2,7 @@
 import { defineProps, reactive, ref } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
+import {isUndefined} from 'lodash'
 import UserProfileCardEditorRandomAvatar from './UserProfileCardEditorRandomAvatar'
 import UserProfileCardEditorReauthenticate from './UserProfileCardEditorReauthenticate.vue'
 import useNotifications from '@/composables/useNotifications'
@@ -16,6 +17,8 @@ const props = defineProps({
 const uploadingImage = ref(false)
 const locationOptions = ref([])
 const needsReAuth = ref(false)
+const emailChanged = ref(false)
+const passwordChanged = ref(false)
 
 const store = useStore();
 const router = useRouter();
@@ -25,8 +28,10 @@ let activeUser = reactive({ ...props.user });
 
 const save = async () => {
   await handleRandomAvatarUpload();
-  const emailChanged = activeUser.email !== props.user.email
-  if (emailChanged) {
+  emailChanged.value = activeUser.email !== props.user.email
+  passwordChanged.value = !isUndefined(activeUser.password)
+
+  if (emailChanged.value || passwordChanged.value) {
     needsReAuth.value = true
   } else {
     saveUserData()
@@ -68,7 +73,8 @@ const loadLocationOptions = async () => {
 }
 
 const onReauthenticated = async () => {
-  await store.dispatch('auth/updateEmail', { email: activeUser.email })
+  if (emailChanged.value) await store.dispatch('auth/updateEmail', { email: activeUser.email })
+  if (passwordChanged.value) await store.dispatch('auth/updatePassword', { password: activeUser.password })
   console.log('on reauthenticated successful')
   saveUserData()
 }
@@ -115,6 +121,7 @@ const saveUserData = async () => {
 
       <AppFormField label="Website" name="website" v-model="activeUser.website" rules="url" />
       <AppFormField label="Email" name="email" v-model="activeUser.email" :rules="`required|email|unique:users,email,${user.email}`"/>
+      <AppFormField label="Change Password" name="password" v-model="activeUser.password" rules="min:8" type="password"/>
       <AppFormField label="Location" name="location" v-model="activeUser.location" list="locations" @mouseenter="loadLocationOptions"/>
       <datalist id="locations">
         <option v-for="location in locationOptions" :value="location.name.common" :key="location.name.common" />

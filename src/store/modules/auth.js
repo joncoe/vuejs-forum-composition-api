@@ -14,6 +14,19 @@ export default {
     }
   },
   actions: {
+    // eslint-disable-next-line
+    async updateEmail ({ state }, { email }) {
+      return firebase.auth().currentUser.updateEmail(email)
+    },
+    async updatePassword ({ state }, { password }) {
+      console.log(password, typeof password)
+      return firebase.auth().currentUser.updatePassword(password)
+    },
+    // eslint-disable-next-line
+    async reauthenticate ({ state }, { email, password }) {
+      const credential = firebase.auth.EmailAuthProvider.credential(email, password)
+      return await firebase.auth().currentUser.reauthenticateWithCredential(credential)
+    },
     initAuthentication ({ dispatch, commit, state }) {
       if (state.authObserverUnsubscribe) state.authObserverUnsubscribe()
       return new Promise((resolve) => {

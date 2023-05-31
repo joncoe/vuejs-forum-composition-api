@@ -24,7 +24,7 @@ defineProps({
 })
 
 onBeforeRouteUpdate(() => {
-  if (!store.state.authId) {
+  if (!store.getters['auth/authUser']) {
     return { name: 'Home'}
   }
 })
