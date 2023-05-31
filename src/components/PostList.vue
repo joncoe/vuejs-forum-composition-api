@@ -43,8 +43,8 @@ const updatePost = ({text, id}) => {
 
         <p class="desktop-only text-small">{{userById(post.userId).postsCount}}
           {{userById(post.userId).postsCount === 1 ? 'post' : 'posts'}} 🌗</p>
-        <p class="desktop-only text-small">{{userById(post.userId).threads.length}}
-          {{userById(post.userId).threads.length === 1 ? 'thread' : 'threads'}} 🪡
+        <p class="desktop-only text-small">{{userById(post.userId).threadIds.length}}
+          {{userById(post.userId).threadIds.length === 1 ? 'thread' : 'threads'}} 🪡
         </p>
       </div>
 

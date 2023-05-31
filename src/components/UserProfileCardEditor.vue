@@ -22,7 +22,7 @@ let activeUser = reactive({ ...props.user });
 
 const save = async () => {
   await handleRandomAvatarUpload();
-  store.dispatch('users/updateUser', { ...activeUser });
+  store.dispatch('users/updateUser', { ...activeUser, threads:  activeUser.threadIds});
   router.push({ name: 'Profile' })
 }
 
@@ -71,7 +71,7 @@ const loadLocationOptions = async () => {
           <input v-show="false" type="file" id="avatar" accept="image/*" @change="handleAvatarUpload">
         </label>
       </p>
-      <!-- UserProfileCardEditorRandomAvatar @hit="activeUser.avatar = $event" / -->
+
       <UserProfileCardEditorRandomAvatar @hit="randomAvatar" />
 
       <AppFormField label="Username" name="username" v-model="activeUser.username" :rules="`required|unique:users,username,${user.username}`" />
@@ -80,7 +80,7 @@ const loadLocationOptions = async () => {
 
       <div class="stats">
         <span>{{ user.postsCount }} posts</span>
-        <span>{{ user.threadCount }} threads</span>
+        <span>{{ user.threadsCount }} threads</span>
       </div>
 
       <hr>
