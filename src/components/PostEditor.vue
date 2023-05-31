@@ -1,5 +1,5 @@
 <script setup>
-import { defineEmits, defineProps, reactive } from 'vue';
+import { defineEmits, defineProps, reactive, ref } from 'vue';
 
 const emit = defineEmits(['save-post']);
 const props = defineProps({
@@ -8,6 +8,8 @@ const props = defineProps({
     default: () => ({text: null})
   }
 })
+
+const formKey = ref(Math.random())
 
 
 const postCopy = reactive({
@@ -18,30 +20,22 @@ const savePost = () => {
   const post = {...postCopy}
   emit('save-post', post )
   postCopy.text = '';
+  formKey.value = Math.random()
 }
 
 
 </script>
 <template>
   <div>
-    <form @submit.prevent="savePost">
+    <VeeForm @submit="savePost" :key="formKey">
       <div class="form-group">
-        <label for="thread_content">Content:</label>
-        <textarea
-          id="thread_content"
-          class="form-input"
-          name="content"
-          rows="8"
-          cols="140"
-          placeholder="Enter your post."
-          v-model="postCopy.text"
-        />
+        <AppFormField as="textarea" name="text" v-model="postCopy.text" rows="10" cols="30" rules="required" />
       </div>
 
       <div class="btn-group">
         <button class="btn btn-blue" type="submit" name="Publish">{{post.id ? 'Update Post' : 'Submit and Save'}} </button>
       </div>
-    </form>
+    </VeeForm>
   </div>
 </template>
 
