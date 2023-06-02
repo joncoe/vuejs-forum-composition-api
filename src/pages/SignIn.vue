@@ -1,5 +1,5 @@
 <script async setup>
-import {reactive} from 'vue';
+import { reactive } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter, useRoute } from 'vue-router';
 const store = useStore();
@@ -26,13 +26,18 @@ const signInWithGoogle = async () => {
 }
 
 const successRedirect = () => {
-  const redirectTo = route.query.redirectTo || {name: 'Home'};
+  const redirectTo = route.query.redirectTo || { name: 'Home' };
   router.push(redirectTo)
 }
 
 </script>
 <template>
   <div class="flex-grid justify-center">
+    <AppHead>
+      <title>Sign In 🔏</title>
+      <meta property="og:title" :content="'Sign In'">
+      <meta name="twitter:title" :content="'Sign In'">
+    </AppHead>
     <div class="col-2">
       <VeeForm @submit="signIn" class="card card-form">
         <h1 class="text-center">Login</h1>
@@ -45,7 +50,7 @@ const successRedirect = () => {
         </div>
 
         <div class="form-actions text-right">
-          <router-link :to="{name: 'Register'}">Create an account?</router-link>
+          <router-link :to="{ name: 'Register' }">Create an account?</router-link>
         </div>
       </VeeForm>
 

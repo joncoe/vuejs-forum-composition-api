@@ -1,7 +1,7 @@
 <script async setup>
 import { defineProps, ref, reactive, computed, watch } from 'vue';
-import {useRoute, useRouter } from 'vue-router';
-import {useStore} from 'vuex';
+import { useRoute, useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 import ThreadList from '@/components/ThreadList.vue';
 
 const store = useStore();
@@ -22,7 +22,7 @@ const perPage = ref(2);
 
 const threads = computed(() => store.getters['threads/threads']);
 
-const forum = await store.dispatch('forums/fetchForum', {id: props.id});
+const forum = await store.dispatch('forums/fetchForum', { id: props.id });
 
 const loadedThreads = await store.dispatch('threads/fetchThreadsByPage', {
   ids: forum.threads,
@@ -30,7 +30,7 @@ const loadedThreads = await store.dispatch('threads/fetchThreadsByPage', {
   perPage: perPage.value
 })
 
-await store.dispatch('users/fetchUsers', { ids: loadedThreads.map(thread => thread.userId)});
+await store.dispatch('users/fetchUsers', { ids: loadedThreads.map(thread => thread.userId) });
 
 
 const threadCount = computed(() => {
@@ -46,40 +46,39 @@ const totalPages = computed(() => {
 watch(
   page,
   async () => {
-    router.push({query: {page: page.pageNumber}})
+    router.push({ query: { page: page.pageNumber } })
   },
 )
 
 </script>
 <template>
-    <div v-if="forum" class="col-full push-top">
-      <div class="forum-header">
-        <div class="forum-details">
-          <h1>{{forum.name}}</h1>
-          <p class="text-lead">{{forum.description}}</p>
-        </div>
-        <router-link
-          :to="{
-            name: 'ThreadCreate',
-            params: {
-              forumId: forum.id
-            }}"
-            class="btn-green btn-small">
-              Start a thread
-        </router-link>
+  <div v-if="forum" class="col-full push-top">
+    <AppHead>
+      <title>{{ forum?.name }}</title>
+      <meta property="og:title" :content="forum?.name">
+      <meta name="twitter:title" :content="forum?.name">
+    </AppHead>
+    <div class="forum-header">
+      <div class="forum-details">
+        <h1>{{ forum.name }}</h1>
+        <p class="text-lead">{{ forum.description }}</p>
       </div>
+      <router-link :to="{
+        name: 'ThreadCreate',
+        params: {
+          forumId: forum.id
+        }
+      }" class="btn-green btn-small">
+        Start a thread
+      </router-link>
     </div>
-    <div class="col-full push-top">
+  </div>
+  <div class="col-full push-top">
 
-      <ThreadList :threads="threads"/>
-      <v-pagination
-        v-model="page.pageNumber"
-        :pages="totalPages"
-        active-color="#57AD8B"
-      />
+    <ThreadList :threads="threads" />
+    <v-pagination v-model="page.pageNumber" :pages="totalPages" active-color="#57AD8B" />
 
-    </div>
-
+  </div>
 </template>
 
 

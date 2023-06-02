@@ -1,7 +1,7 @@
 <script async setup>
-import {defineProps, ref } from 'vue';
+import { defineProps, ref } from 'vue';
 import ThreadEditor from '@/components/ThreadEditor.vue';
-import {useRouter, onBeforeRouteLeave} from 'vue-router';
+import { useRouter, onBeforeRouteLeave } from 'vue-router';
 import { useStore } from 'vuex';
 
 const props = defineProps({
@@ -15,22 +15,26 @@ const formIsDirty = ref(false)
 const store = useStore();
 let router = useRouter();
 
-const forum = await store.dispatch('forums/fetchForum', {id: props.forumId})
+const forum = await store.dispatch('forums/fetchForum', { id: props.forumId })
 
-const save = async ({title, text}) => {
+const save = async ({ title, text }) => {
   const thread = await store.dispatch('threads/createThread', {
     forumId: props.forumId,
     title: title,
     text: text
   })
-  router.push({name: 'ThreadShow', params: {
-    id: thread.id
-  }})
+  router.push({
+    name: 'ThreadShow', params: {
+      id: thread.id
+    }
+  })
 }
 const cancel = () => {
-  router.push({name: 'Forum', params: {
-    id: forum.id
-  }})
+  router.push({
+    name: 'Forum', params: {
+      id: forum.id
+    }
+  })
 }
 
 onBeforeRouteLeave(() => {
@@ -46,15 +50,15 @@ const dirtyClean = (value) => {
 
 <template>
   <div v-if="forum" class="col-full push-top">
+    <AppHead>
+      <title>Create a Thread 🧵</title>
+      <meta property="og:title" :content="'Create a Thread'">
+      <meta name="twitter:title" :content="'Create a Thread'">
+    </AppHead>
 
-    <h1>Create new thread in <i>{{forum.name}}</i></h1>
+    <h1>Create new thread in <i>{{ forum.name }}</i></h1>
 
-    <ThreadEditor
-      @save="save"
-      @cancel="cancel"
-      @dirty="dirtyClean(true)"
-      @clean="dirtyClean(false)"
-    />
+    <ThreadEditor @save="save" @cancel="cancel" @dirty="dirtyClean(true)" @clean="dirtyClean(false)" />
 
   </div>
 </template>
