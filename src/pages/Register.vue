@@ -1,6 +1,6 @@
 <script setup>
-import {reactive, ref } from 'vue';
-import { useRouter } from  'vue-router';
+import { reactive, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
 const store = useStore();
@@ -17,13 +17,13 @@ const form = reactive({
 const avatarPreview = ref(null);
 
 const register = async () => {
-  await store.dispatch('auth/registerUserWithEmailAndPassword', {...form})
-  router.push({name: 'Home'})
+  await store.dispatch('auth/registerUserWithEmailAndPassword', { ...form })
+  router.push({ name: 'Home' })
 }
 
 const registerWithGoogle = async () => {
-  await store.dispatch('auth/signInWithGoogle', {...form})
-  router.push({name: 'Home'})
+  await store.dispatch('auth/signInWithGoogle', { ...form })
+  router.push({ name: 'Home' })
 }
 
 const handleImageUpload = (e) => {
@@ -39,16 +39,19 @@ const handleImageUpload = (e) => {
 </script>
 <template>
   <div class="flex-grid justify-center">
+    <AppHead>
+      <title>Registration Page 🗒</title>
+      <meta property="og:title" :content="'Registration Page'">
+      <meta name="twitter:title" :content="'Registration Page'">
+    </AppHead>
     <div class="col-2">
-      <VeeForm
-        @submit="register"
-        class="card card-form"
-      >
+      <VeeForm @submit="register" class="card card-form">
         <h1 class="text-center">Register</h1>
 
         <AppFormField v-model="form.name" name="name" label="Name" rules="required" />
         <AppFormField v-model="form.username" name="username" label="Username" rules="required|unique:users,username" />
-        <AppFormField v-model="form.email" name="email" label="Email" rules="required|email|unique:users,email" type="email" />
+        <AppFormField v-model="form.email" name="email" label="Email" rules="required|email|unique:users,email"
+          type="email" />
         <AppFormField v-model="form.password" name="password" label="Password" rules="required|min:8" type="password" />
 
         <div class="form-group">
@@ -58,15 +61,8 @@ const handleImageUpload = (e) => {
               <img :src="avatarPreview" class="avatar-xlarge">
             </div>
           </label>
-          <VeeField
-            v-show="!avatarPreview"
-            id="avatar"
-            name="avatar"
-            type="file"
-            class="form-input"
-            accept="image/*"
-            @change="handleImageUpload"
-          />
+          <VeeField v-show="!avatarPreview" id="avatar" name="avatar" type="file" class="form-input" accept="image/*"
+            @change="handleImageUpload" />
         </div>
 
         <div class="form-actions">

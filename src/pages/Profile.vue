@@ -28,7 +28,7 @@ const lastPostFetched = computed(() => {
 })
 
 const fetchUserPosts = async () => {
-  return await store.dispatch('auth/fetchAuthUsersPosts', {startAfter: lastPostFetched.value})
+  return await store.dispatch('auth/fetchAuthUsersPosts', { startAfter: lastPostFetched.value })
 }
 
 await fetchUserPosts()
@@ -36,6 +36,11 @@ await fetchUserPosts()
 </script>
 <template>
   <div v-if="user" class="container col-full">
+    <AppHead>
+      <title>{{ user.username }} Profile Page</title>
+      <meta property="og:title" :content="'Profile Page'">
+      <meta name="twitter:title" :content="'Profile Page'">
+    </AppHead>
     <div>
       <h1>Profile page</h1>
     </div>
@@ -53,17 +58,14 @@ await fetchUserPosts()
 
           <div class="profile-header">
             <span class="text-lead">
-              {{user.username}}'s recent activity
+              {{ user.username }}'s recent activity
             </span>
           </div>
 
           <hr>
 
           <PostList :posts="user.posts" />
-          <AppInfiniteScroll
-            @load="fetchUserPosts"
-            :done="user.posts.length === user.postsCount"
-          />
+          <AppInfiniteScroll @load="fetchUserPosts" :done="user.posts.length === user.postsCount" />
 
         </div>
       </div>
