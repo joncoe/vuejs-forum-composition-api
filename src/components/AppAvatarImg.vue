@@ -1,5 +1,5 @@
 <script setup>
-import {defineProps} from 'vue';
+import { defineProps } from 'vue';
 
 const props = defineProps({
   src: { type: String }
@@ -8,11 +8,11 @@ const props = defineProps({
 </script>
 
 <template>
-  <img :src="props.src || '/images/user-placeholder.png'" />
+  <img :src="props.src || '/img/user-placeholder.png'" />
 </template>
 
 <style scoped>
-  img{
-    object-fit: cover;
-  }
+img {
+  object-fit: cover;
+}
 </style>
