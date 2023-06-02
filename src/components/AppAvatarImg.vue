@@ -8,7 +8,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <img :src="props.src || '@/assets/user-placeholder.png'" />
+  <img :src="props.src || '/user-placeholder.png'" />
 </template>
 
 <style scoped>
